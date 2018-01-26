@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.vita.animation.tween.AlphaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_alpha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_brightness_5_48dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="fromAlpha"/>
+
+            <SeekBar
+                android:id="@+id/sb_from_alpha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="10"
+                android:min="0"/>
+
+            <TextView
+                android:id="@+id/tv_from_alpha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="toAlpha"/>
+
+            <SeekBar
+                android:id="@+id/sb_to_alpha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:max="10"
+                android:min="0"/>
+
+            <TextView
+                android:id="@+id/tv_to_alpha"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="0"/>
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rg_interpolator"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rb_acc_dec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AccelerateDecelerate"/>
+
+            <RadioButton
+                android:id="@+id/rb_acc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Accelerate"/>
+
+            <RadioButton
+                android:id="@+id/rb_anti"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anticipate"/>
+
+            <RadioButton
+                android:id="@+id/rb_anti_os"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AnticipateOvershoot"/>
+
+            <RadioButton
+                android:id="@+id/rb_bounce"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bounce"/>
+
+            <RadioButton
+                android:id="@+id/rb_dec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Decelerate"/>
+
+            <RadioButton
+                android:id="@+id/rb_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Linear"/>
+
+            <RadioButton
+                android:id="@+id/rb_overshoot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Overshoot"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</ScrollView>
