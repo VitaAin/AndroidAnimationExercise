@@ -90,6 +90,7 @@ public class ObjectAnimActivity extends AppCompatActivity implements View.OnClic
     private void setClickListener() {
         findViewById(R.id.btn_scatter).setOnClickListener(this);
         findViewById(R.id.btn_circle_around).setOnClickListener(this);
+        findViewById(R.id.btn_ball_fall).setOnClickListener(this);
     }
 
     @Override
@@ -101,6 +102,9 @@ public class ObjectAnimActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.btn_circle_around:
                 clz = CircleAroundActivity.class;
+                break;
+            case R.id.btn_ball_fall:
+                clz = BallFallActivity.class;
                 break;
         }
         jumpTo(clz);

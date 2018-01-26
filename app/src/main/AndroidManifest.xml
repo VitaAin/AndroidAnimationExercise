@@ -36,6 +36,8 @@
         </activity>
         <activity android:name=".value.CircleAroundActivity">
         </activity>
+        <activity android:name=".value.BallFallActivity">
+        </activity>
     </application>
 
 </manifest>

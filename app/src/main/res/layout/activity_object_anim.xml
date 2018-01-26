@@ -72,6 +72,13 @@
             android:text="Circle Around"
             android:textAllCaps="false"/>
 
+        <Button
+            android:id="@+id/btn_ball_fall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ball Fall"
+            android:textAllCaps="false"/>
+
     </LinearLayout>
 
 </ScrollView>
