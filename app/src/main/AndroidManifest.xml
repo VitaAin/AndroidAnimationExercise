@@ -32,7 +32,9 @@
         </activity>
         <activity android:name=".other.OtherActivity">
         </activity>
-        <activity android:name=".value.ScatterTestActivity">
+        <activity android:name=".value.ScatterActivity">
+        </activity>
+        <activity android:name=".value.CircleAroundActivity">
         </activity>
     </application>
 

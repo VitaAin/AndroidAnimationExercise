@@ -29,10 +29,6 @@ public class ObjectAnimActivity extends AppCompatActivity implements View.OnClic
         setClickListener();
     }
 
-    private void setClickListener() {
-        findViewById(R.id.btn_scatter_test).setOnClickListener(this);
-    }
-
     private void setupObj1() {
         ImageView iv = (ImageView) findViewById(R.id.iv_obj_1);
         ObjectAnimator anim = ObjectAnimator.ofFloat(iv, "rotation", 0, 360);
@@ -91,12 +87,20 @@ public class ObjectAnimActivity extends AppCompatActivity implements View.OnClic
         animSet.start();
     }
 
+    private void setClickListener() {
+        findViewById(R.id.btn_scatter).setOnClickListener(this);
+        findViewById(R.id.btn_circle_around).setOnClickListener(this);
+    }
+
     @Override
     public void onClick(View view) {
         Class clz = null;
         switch (view.getId()) {
-            case R.id.btn_scatter_test:
-                clz = ScatterTestActivity.class;
+            case R.id.btn_scatter:
+                clz = ScatterActivity.class;
+                break;
+            case R.id.btn_circle_around:
+                clz = CircleAroundActivity.class;
                 break;
         }
         jumpTo(clz);

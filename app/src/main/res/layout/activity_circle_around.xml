@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.vita.animation.value.CircleAroundActivity">
+
+    <Button
+        android:id="@+id/btn_start_anim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="start"
+        android:textAllCaps="false"/>
+
+    <FrameLayout
+        android:id="@+id/circle_1"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_do_not_disturb_on_24dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/circle_2"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_do_not_disturb_on_24dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/circle_3"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_do_not_disturb_on_24dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/circle_4"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_do_not_disturb_on_24dp"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/circle_5"
+        android:layout_width="wrap_content"
+        android:layout_height="160dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_do_not_disturb_on_24dp"/>
+
+    </FrameLayout>
+
+</RelativeLayout>

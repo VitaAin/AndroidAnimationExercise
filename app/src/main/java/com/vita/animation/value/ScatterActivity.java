@@ -13,7 +13,7 @@ import com.vita.animation.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScatterTestActivity extends AppCompatActivity implements View.OnClickListener {
+public class ScatterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int[] mScatterIvIds = new int[]{R.id.iv_scatter_center,
             R.id.iv_scatter_1, R.id.iv_scatter_2,
@@ -24,7 +24,7 @@ public class ScatterTestActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scatter_test);
+        setContentView(R.layout.activity_scatter);
 
         for (int i = 0; i < mScatterIvIds.length; i++) {
             ImageView iv = (ImageView) findViewById(mScatterIvIds[i]);

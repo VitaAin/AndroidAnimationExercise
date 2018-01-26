@@ -59,10 +59,18 @@
             android:background="@color/colorPrimary"/>
 
         <Button
-            android:id="@+id/btn_scatter_test"
+            android:id="@+id/btn_scatter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scatter Test"/>
+            android:text="Scatter"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_circle_around"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Circle Around"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 
