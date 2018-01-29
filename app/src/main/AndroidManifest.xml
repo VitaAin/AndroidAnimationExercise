@@ -34,6 +34,8 @@
         <activity android:name=".value.BallFallActivity">
         </activity>
         <activity android:name=".tween.AnimInListActivity">
+        </activity>
+        <activity android:name=".tween.AnimInRVActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -29,6 +29,7 @@ public class AnimInListActivity extends AppCompatActivity {
         initData();
 
         ListView lv1 = (ListView) findViewById(R.id.lv_1);
+        // can also used in .xml
         LayoutAnimationController layoutAnimCtrl = new LayoutAnimationController(
                 AnimationUtils.loadAnimation(this, R.anim.zoom_in));
         layoutAnimCtrl.setDelay(0.5f);

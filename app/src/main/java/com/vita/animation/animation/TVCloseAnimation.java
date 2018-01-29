@@ -5,12 +5,12 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 /**
- * @FileName: com.vita.animation.animation.TVCloseAnim.java
+ * @FileName: com.vita.animation.animation.TVCloseAnimation.java
  * @Author: Vita
  * @Date: 2018-01-26 13:19
  * @Usage:
  */
-public class TVCloseAnim extends Animation {
+public class TVCloseAnimation extends Animation {
 
     private int mCenterWidth, mCenterHeight;
 

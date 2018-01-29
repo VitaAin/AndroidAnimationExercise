@@ -44,6 +44,12 @@ public class TweenAnimActivity extends AppCompatActivity implements View.OnClick
             case R.id.btn_rotate:
                 clz = RotateActivity.class;
                 break;
+            case R.id.btn_anim_in_list:
+                clz = AnimInListActivity.class;
+                break;
+            case R.id.btn_anim_in_rv:
+                clz = AnimInRVActivity.class;
+                break;
         }
         jumpTo(clz);
     }

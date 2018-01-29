@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.vita.animation.R;
-import com.vita.animation.animation.TVCloseAnim;
-import com.vita.animation.animation.TremblingAnim;
+import com.vita.animation.animation.TVCloseAnimation;
+import com.vita.animation.animation.TremblingAnimation;
 
 public class OtherActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,14 +32,14 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_trembling:
-                TremblingAnim tremblingAnim = new TremblingAnim();
+                TremblingAnimation tremblingAnim = new TremblingAnimation();
                 tremblingAnim.setDuration(800);
                 tremblingAnim.setRepeatCount(2);
                 mContainer.startAnimation(tremblingAnim);
                 break;
             case R.id.btn_tv_close:
-                TVCloseAnim tvCloseAnim = new TVCloseAnim();
-                mContainer.startAnimation(tvCloseAnim);
+                TVCloseAnimation tvCloseAnimation = new TVCloseAnimation();
+                mContainer.startAnimation(tvCloseAnimation);
                 break;
         }
     }

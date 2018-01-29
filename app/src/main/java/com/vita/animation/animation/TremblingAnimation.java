@@ -4,12 +4,12 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
 /**
- * @FileName: com.vita.animation.animation.TremblingAnim.java
+ * @FileName: com.vita.animation.animation.TremblingAnimation.java
  * @Author: Vita
  * @Date: 2018-01-26 11:21
  * @Usage:
  */
-public class TremblingAnim extends Animation {
+public class TremblingAnimation extends Animation {
 
     /*
     interpolatedTime: 当前动画进行的时间与动画总时间（Duration）的比值，从0逐渐增大到1
