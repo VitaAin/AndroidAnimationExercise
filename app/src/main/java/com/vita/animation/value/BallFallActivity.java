@@ -16,13 +16,11 @@ public class BallFallActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ball_fall);
 
         mBallView = (BallView) findViewById(R.id.ball_view);
-        mBallView.triggerAnim();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        mBallView.startAnim();
     }
 }

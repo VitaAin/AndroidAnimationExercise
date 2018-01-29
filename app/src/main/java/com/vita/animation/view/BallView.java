@@ -18,8 +18,6 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
-import com.vita.animation.evaluator.BallFallEvaluator;
-
 /**
  * @FileName: com.vita.animation.view.BallView.java
  * @Author: Vita
@@ -66,20 +64,31 @@ public class BallView extends View {
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        triggerAnim();
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        Log.i(TAG, "onLayout: width:: " + getWidth());
+        Log.i(TAG, "onLayout: height:: " + getHeight());
+
+        triggerAnim();
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
-        Log.d(TAG, "BallView onDraw");
+//        Log.d(TAG, "BallView onDraw");
         if (mCurPoint == null) {
             mCurPoint = new Point(BALL_RADIUS, getWidth() / 2, BALL_RADIUS);
         }
 
         drawLine(canvas);
         drawCircle(canvas);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        triggerAnim();
     }
 
     private void drawLine(Canvas canvas) {
@@ -89,7 +98,7 @@ public class BallView extends View {
     private void drawCircle(Canvas canvas) {
         float x = mCurPoint.getX();
         float y = mCurPoint.getY();
-        Log.d(TAG, "drawCircle: " + mCurPoint.getWidth());
+//        Log.d(TAG, "drawCircle: " + mCurPoint.getWidth());
 //        canvas.drawCircle(x, y, BALL_RADIUS, mBallPaint);
         RectF rectF = new RectF(x - mCurPoint.getWidth() / 2,
                 y - mCurPoint.getHeight() / 2,
@@ -99,6 +108,10 @@ public class BallView extends View {
     }
 
     public void triggerAnim() {
+        Log.i(TAG, "triggerAnim");
+
+        stopAnim();
+
         final int width = getWidth();
         int height = getHeight();
         if (mCurPoint == null) {
@@ -116,6 +129,7 @@ public class BallView extends View {
                 "y", startP.getY(), endP.getY());
         fallAnim.setDuration(duration);
         fallAnim.setInterpolator(new AccelerateInterpolator());
+        fallAnim.setStartDelay(100);
         fallAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -166,16 +180,36 @@ public class BallView extends View {
         });
 
         mAnimSet = new AnimatorSet();
-//        mAnimSet.play(fallAnim).before(squashAnim);
-//        mAnimSet.play(squashAnim).with(widthAnim);
         mAnimSet.play(fallAnim).before(widthAnim);
         mAnimSet.play(widthAnim).with(heightAnim);
         mAnimSet.play(bounceAnim).after(heightAnim);
-//        mAnimSet.setDuration(duration);
+        mAnimSet.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                Log.d(TAG, "onAnimationStart");
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                Log.d(TAG, "onAnimationEnd");
+                mAnimSet.start();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+                Log.d(TAG, "onAnimationCancel");
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+                Log.d(TAG, "onAnimationRepeat");
+            }
+        });
         mAnimSet.start();
     }
 
     public void startAnim() {
+        Log.d(TAG, "startAnim");
         if (mAnimSet != null) {
             mAnimSet.start();
         }
@@ -183,15 +217,21 @@ public class BallView extends View {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void pauseAnim() {
+        Log.d(TAG, "pauseAnim");
         if (mAnimSet != null) {
             mAnimSet.pause();
         }
     }
 
     public void stopAnim() {
+        Log.d(TAG, "stopAnim");
         if (mAnimSet != null) {
+            if (mAnimSet.isStarted() || mAnimSet.isRunning()) {
+                mAnimSet.end();
+            }
             mAnimSet.cancel();
             clearAnimation();
+            mCurPoint = null;
         }
     }
 }
