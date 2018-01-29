@@ -1,4 +1,6 @@
-# AndroidAnimationExercise
+## AndroidAnimationExercise
+
+Just do a practice on Android animation
 
 > 参考：
 > 
