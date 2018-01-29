@@ -1,18 +1,22 @@
 package com.vita.animation.view;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import com.vita.animation.evaluator.BallFallEvaluator;
 
@@ -30,6 +34,7 @@ public class BallView extends View {
 
     private Point mCurPoint;
     private Paint mBallPaint;
+    private Paint mRectPaint;
     private AnimatorSet mAnimSet;
 
     public BallView(Context context) {
@@ -51,6 +56,12 @@ public class BallView extends View {
         Log.d(TAG, "BallView init");
         mBallPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mBallPaint.setColor(Color.BLUE);
+
+        mRectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRectPaint.setColor(Color.BLUE);
+        mRectPaint.setStrokeWidth(2);
+        mRectPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+
         setBackgroundColor(Color.LTGRAY);
     }
 
@@ -58,9 +69,10 @@ public class BallView extends View {
     protected void onDraw(Canvas canvas) {
         Log.d(TAG, "BallView onDraw");
         if (mCurPoint == null) {
-            mCurPoint = new Point(getWidth() / 2, BALL_RADIUS);
+            mCurPoint = new Point(BALL_RADIUS, getWidth() / 2, BALL_RADIUS);
         }
 
+        drawLine(canvas);
         drawCircle(canvas);
     }
 
@@ -70,37 +82,96 @@ public class BallView extends View {
         triggerAnim();
     }
 
+    private void drawLine(Canvas canvas) {
+        canvas.drawLine(getWidth() / 2, 0, getWidth() / 2, getHeight(), mBallPaint);
+    }
+
     private void drawCircle(Canvas canvas) {
         float x = mCurPoint.getX();
         float y = mCurPoint.getY();
-        canvas.drawCircle(x, y, BALL_RADIUS, mBallPaint);
+        Log.d(TAG, "drawCircle: " + mCurPoint.getWidth());
+//        canvas.drawCircle(x, y, BALL_RADIUS, mBallPaint);
+        RectF rectF = new RectF(x - mCurPoint.getWidth() / 2,
+                y - mCurPoint.getHeight() / 2,
+                x + mCurPoint.getWidth() / 2,
+                y + mCurPoint.getHeight() / 2);
+        canvas.drawOval(rectF, mRectPaint);
     }
 
     public void triggerAnim() {
-        Point startP = new Point(getWidth() / 2, BALL_RADIUS);
-        Point endP = new Point(getWidth() / 2, getHeight() - BALL_RADIUS);
+        final int width = getWidth();
+        int height = getHeight();
+        if (mCurPoint == null) {
+            mCurPoint = new Point(BALL_RADIUS, width / 2, BALL_RADIUS);
+        }
 
-//        float startY = mCurPoint.getY();
-//        float endY = getHeight() - 2 * BALL_RADIUS;
-//        float height = getHeight();
-        int duration = 5000;
+        Point startP = new Point(BALL_RADIUS, width / 2, BALL_RADIUS);
+        Point endP = new Point(BALL_RADIUS, width / 2, height - BALL_RADIUS);
+        Log.i(TAG, "triggerAnim: startP: " + startP);
+        Log.i(TAG, "triggerAnim: endP: " + endP);
 
-        ValueAnimator valueAnim = ValueAnimator.ofObject(new BallFallEvaluator(), startP, endP);
-//        valueAnim.setRepeatCount(-1);
-//        valueAnim.setRepeatMode(ValueAnimator.REVERSE);
-        valueAnim.setDuration(duration);
-        valueAnim.setInterpolator(new AccelerateInterpolator());
-        valueAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        int duration = 1000;
+
+        ObjectAnimator fallAnim = ObjectAnimator.ofFloat(mCurPoint,
+                "y", startP.getY(), endP.getY());
+        fallAnim.setDuration(duration);
+        fallAnim.setInterpolator(new AccelerateInterpolator());
+        fallAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mCurPoint = (Point) valueAnimator.getAnimatedValue();
+                mCurPoint.setX(width / 2);
+//                mCurPoint.setY((float) valueAnimator.getAnimatedValue());
+                postInvalidate();
+            }
+        });
+
+        ObjectAnimator widthAnim = ObjectAnimator.ofFloat(mCurPoint,
+                "width", mCurPoint.getWidth(), mCurPoint.getWidth() + BALL_RADIUS * 2 / 3);
+        widthAnim.setDuration(duration / 4);
+        widthAnim.setRepeatCount(1);
+        widthAnim.setRepeatMode(ValueAnimator.REVERSE);
+        widthAnim.setInterpolator(new DecelerateInterpolator());
+        widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                mCurPoint.setWidth((Float) valueAnimator.getAnimatedValue());
+                postInvalidate();
+            }
+        });
+
+        ObjectAnimator heightAnim = ObjectAnimator.ofFloat(mCurPoint,
+                "height", mCurPoint.getHeight(), mCurPoint.getHeight() - BALL_RADIUS / 3);
+        heightAnim.setDuration(duration / 4);
+        heightAnim.setRepeatCount(1);
+        heightAnim.setRepeatMode(ValueAnimator.REVERSE);
+        heightAnim.setInterpolator(new DecelerateInterpolator());
+        heightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                mCurPoint.setHeight((Float) valueAnimator.getAnimatedValue());
+                postInvalidate();
+            }
+        });
+
+        ObjectAnimator bounceAnim = ObjectAnimator.ofFloat(mCurPoint,
+                "y", endP.getY(), startP.getY());
+        bounceAnim.setDuration(duration * 2);
+        bounceAnim.setInterpolator(new DecelerateInterpolator());
+        bounceAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+//                mCurPoint.setY((Float) valueAnimator.getAnimatedValue());
                 postInvalidate();
             }
         });
 
         mAnimSet = new AnimatorSet();
-        mAnimSet.play(valueAnim);
-        mAnimSet.setDuration(duration);
+//        mAnimSet.play(fallAnim).before(squashAnim);
+//        mAnimSet.play(squashAnim).with(widthAnim);
+        mAnimSet.play(fallAnim).before(widthAnim);
+        mAnimSet.play(widthAnim).with(heightAnim);
+        mAnimSet.play(bounceAnim).after(heightAnim);
+//        mAnimSet.setDuration(duration);
         mAnimSet.start();
     }
 
