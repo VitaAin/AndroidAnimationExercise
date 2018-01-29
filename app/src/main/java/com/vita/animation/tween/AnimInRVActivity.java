@@ -6,6 +6,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -62,6 +64,28 @@ public class AnimInRVActivity extends AppCompatActivity implements View.OnClickL
                 mAdapter.notifyItemChanged(5);
                 break;
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_anim_in_rv, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_item_fade:
+                break;
+            case R.id.menu_item_scale:
+                break;
+            case R.id.menu_item_translate:
+                break;
+            case R.id.menu_item_rotate:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     class RvAdapter extends RecyclerView.Adapter {
