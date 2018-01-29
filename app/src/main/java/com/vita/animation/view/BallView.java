@@ -24,7 +24,7 @@ import android.view.animation.DecelerateInterpolator;
  * @Date: 2018-01-26 16:35
  * @Usage:
  */
-public class BallView extends View {
+public class BallView extends View implements ValueAnimator.AnimatorUpdateListener {
 
     private static final String TAG = "BallView";
 
@@ -133,12 +133,28 @@ public class BallView extends View {
         fallAnim.setDuration(duration);
         fallAnim.setInterpolator(new AccelerateInterpolator());
         fallAnim.setStartDelay(100);
-        fallAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        fallAnim.addUpdateListener(this);
+        fallAnim.addListener(new Animator.AnimatorListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mCurPoint.setX(width / 2);
-//                mCurPoint.setY((float) valueAnimator.getAnimatedValue());
-                postInvalidate();
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+//                Log.d(TAG, "onAnimationEnd: colorIdx:: " + colorIdx);
+                colorIdx++;
+                mBallPaint.setColor(colors[colorIdx % colors.length]);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
             }
         });
 
@@ -148,13 +164,7 @@ public class BallView extends View {
         widthAnim.setRepeatCount(1);
         widthAnim.setRepeatMode(ValueAnimator.REVERSE);
         widthAnim.setInterpolator(new DecelerateInterpolator());
-        widthAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-//                mCurPoint.setWidth((Float) valueAnimator.getAnimatedValue());
-                postInvalidate();
-            }
-        });
+        widthAnim.addUpdateListener(this);
 
         ObjectAnimator heightAnim = ObjectAnimator.ofFloat(mCurPoint,
                 "height", mCurPoint.getHeight(), mCurPoint.getHeight() - BALL_RADIUS / 3);
@@ -162,25 +172,13 @@ public class BallView extends View {
         heightAnim.setRepeatCount(1);
         heightAnim.setRepeatMode(ValueAnimator.REVERSE);
         heightAnim.setInterpolator(new DecelerateInterpolator());
-        heightAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-//                mCurPoint.setHeight((Float) valueAnimator.getAnimatedValue());
-                postInvalidate();
-            }
-        });
+        heightAnim.addUpdateListener(this);
 
         ObjectAnimator bounceAnim = ObjectAnimator.ofFloat(mCurPoint,
                 "y", endP.getY(), startP.getY());
         bounceAnim.setDuration(duration * 2);
         bounceAnim.setInterpolator(new DecelerateInterpolator());
-        bounceAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-//                mCurPoint.setY((Float) valueAnimator.getAnimatedValue());
-                postInvalidate();
-            }
-        });
+        bounceAnim.addUpdateListener(this);
 
         mAnimSet = new AnimatorSet();
         mAnimSet.play(fallAnim).before(widthAnim);
@@ -195,8 +193,6 @@ public class BallView extends View {
             @Override
             public void onAnimationEnd(Animator animator) {
 //                Log.d(TAG, "onAnimationEnd");
-                colorIdx++;
-                mBallPaint.setColor(colors[colorIdx % colors.length]);
                 mAnimSet.start();
             }
 
@@ -238,5 +234,10 @@ public class BallView extends View {
             clearAnimation();
             mCurPoint = null;
         }
+    }
+
+    @Override
+    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+        postInvalidate();
     }
 }
