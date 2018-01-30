@@ -19,6 +19,8 @@ public class FlutterActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.btn_add_item).setOnClickListener(this);
 
         mFlutterView = (FlutterView) findViewById(R.id.flutter_view);
+        mFlutterView.setItemWidth(100);
+        mFlutterView.setItemHeight(100);
     }
 
     @Override

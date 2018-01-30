@@ -5,9 +5,8 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.PointF;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,12 +14,20 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.vita.animation.R;
 import com.vita.animation.evaluator.BezierEvaluator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,12 +41,10 @@ public class FlutterView extends FrameLayout {
     private static final String TAG = "FlutterLayout";
 
     private LayoutParams mItemLp;
-
     private Random mRandom = new Random();
-    private Paint mPathPaint;
-
     private int mWidth, mHeight;
     private int mItemWidth, mItemHeight;
+    private List<Interpolator> mInterpolators;
 
     public FlutterView(Context context) {
         super(context);
@@ -58,6 +63,12 @@ public class FlutterView extends FrameLayout {
 
     private void init() {
         setBackgroundColor(0xaaccff);
+
+        mInterpolators = new ArrayList<>();
+        mInterpolators.add(new AccelerateDecelerateInterpolator());
+        mInterpolators.add(new AccelerateInterpolator());
+        mInterpolators.add(new DecelerateInterpolator());
+        mInterpolators.add(new LinearInterpolator());
 
         mItemLp = new LayoutParams(
                 mItemWidth == 0 ? ViewGroup.LayoutParams.WRAP_CONTENT : mItemWidth,
@@ -142,6 +153,7 @@ public class FlutterView extends FrameLayout {
         ValueAnimator itemPathAnim = getItemPathAnim(target);
 
         AnimatorSet animSet = new AnimatorSet();
+        animSet.setInterpolator(mInterpolators.get(mRandom.nextInt(mInterpolators.size())));
         animSet.playSequentially(itemAddAnim);
         animSet.playSequentially(itemAddAnim, itemPathAnim);
         animSet.setTarget(target);
@@ -154,8 +166,6 @@ public class FlutterView extends FrameLayout {
         ivItem.setImageResource(R.drawable.ic_favorite_24dp);
         ivItem.setLayoutParams(mItemLp);
 
-        Log.d(TAG, "addItem: " + ivItem.getDrawable().getIntrinsicWidth() + ", "
-                + ivItem.getDrawable().getIntrinsicHeight());
         if (mItemWidth == 0) {
             mItemWidth = ivItem.getDrawable().getIntrinsicWidth();
         }
@@ -174,6 +184,32 @@ public class FlutterView extends FrameLayout {
         super.onViewRemoved(child);
         Log.d(TAG, "onViewRemoved");
         child = null;
+    }
+
+    public void addInterpolators(Interpolator... interpolators) {
+        if (interpolators == null || interpolators.length == 0) return;
+        mInterpolators.clear();
+        Collections.addAll(mInterpolators, interpolators);
+    }
+
+    public void setInterpolators(Interpolator... interpolators) {
+        if (interpolators == null || interpolators.length == 0) return;
+        for (Interpolator i : interpolators) {
+            if (mInterpolators.contains(i)) {
+                continue;
+            }
+            mInterpolators.add(i);
+        }
+    }
+
+    public void setItemWidth(int itemWidth) {
+        mItemWidth = itemWidth;
+        mItemLp.width = itemWidth;
+    }
+
+    public void setItemHeight(int itemHeight) {
+        mItemHeight = itemHeight;
+        mItemLp.height = itemHeight;
     }
 
     private class BezierAnimUpdateListener implements ValueAnimator.AnimatorUpdateListener {
