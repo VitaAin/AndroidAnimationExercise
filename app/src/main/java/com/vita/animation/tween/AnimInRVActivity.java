@@ -13,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.vita.animation.R;
+import com.vita.animation.itemanimator.FadeItemAnimator;
+import com.vita.animation.itemanimator.RotateItemAnimator;
+import com.vita.animation.itemanimator.ScaleItemAnimator;
+import com.vita.animation.itemanimator.TranslateItemAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +25,8 @@ public class AnimInRVActivity extends AppCompatActivity implements View.OnClickL
 
     private List<String> mDataList = new ArrayList<>();
     private RvAdapter mAdapter;
+    private RecyclerView mRv1;
+    private TextView mTvItemAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +35,19 @@ public class AnimInRVActivity extends AppCompatActivity implements View.OnClickL
 
         initData();
 
+        mTvItemAnim = (TextView) findViewById(R.id.tv_item_anim);
+        mTvItemAnim.setText("DefaultItemAnimator");
         findViewById(R.id.btn_insert).setOnClickListener(this);
         findViewById(R.id.btn_remove).setOnClickListener(this);
         findViewById(R.id.btn_update).setOnClickListener(this);
 
-        RecyclerView rv1 = (RecyclerView) findViewById(R.id.rv_1);
-        rv1.setLayoutManager(new LinearLayoutManager(this));
+        mRv1 = (RecyclerView) findViewById(R.id.rv_1);
+        mRv1.setLayoutManager(new LinearLayoutManager(this));
 
-        rv1.setItemAnimator(new DefaultItemAnimator());
+        mRv1.setItemAnimator(new DefaultItemAnimator());
 
         mAdapter = new RvAdapter();
-        rv1.setAdapter(mAdapter);
+        mRv1.setAdapter(mAdapter);
     }
 
     private void initData() {
@@ -76,12 +84,20 @@ public class AnimInRVActivity extends AppCompatActivity implements View.OnClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_item_fade:
+                mRv1.setItemAnimator(new FadeItemAnimator());
+                mTvItemAnim.setText("FadeItemAnimator");
                 break;
             case R.id.menu_item_scale:
+                mRv1.setItemAnimator(new ScaleItemAnimator());
+                mTvItemAnim.setText("ScaleItemAnimator");
                 break;
             case R.id.menu_item_translate:
+                mRv1.setItemAnimator(new TranslateItemAnimator());
+                mTvItemAnim.setText("TranslateItemAnimator");
                 break;
             case R.id.menu_item_rotate:
+                mRv1.setItemAnimator(new RotateItemAnimator());
+                mTvItemAnim.setText("RotateItemAnimator");
                 break;
         }
 

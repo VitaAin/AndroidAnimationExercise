@@ -1,4 +1,4 @@
-package com.vita.animation.animation;
+package com.vita.animation.itemanimator;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,7 +6,6 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @FileName: com.vita.animation.animation.BaseItemAnimator.java
+ * @FileName: com.vita.animation.itemanimator.BaseItemAnimator.java
  * @Author: Vita
  * @Date: 2018-01-29 16:55
  * @Usage: BaseItemAnimator of custom ItemAnimator on RecyclerView
@@ -188,7 +187,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
         final ViewPropertyAnimator animation = view.animate();
         mRemoveAnimations.add(holder);
         setRemoveAnim(holder, animation);
-        animation.setDuration(getRemoveDuration()).alpha(0).setListener(
+        animation.setDuration(getRemoveDuration()).setListener(
                 new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationStart(Animator animator) {
