@@ -6,6 +6,8 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.PointF;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -45,6 +47,21 @@ public class FlutterView extends FrameLayout {
     private int mWidth, mHeight; // 整个View（容器）的宽、高
     private int mItemWidth, mItemHeight; // item的宽、高
     private List<Interpolator> mInterpolators;
+    private boolean isAuto = false;
+    private float mAutoDurationSecond = 1.5f; // unit: s
+    private static final int FLUTTER_START = 0x77;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case FLUTTER_START:
+                    addItem();
+                    mHandler.sendEmptyMessageDelayed(FLUTTER_START,
+                            (long) (mAutoDurationSecond * 1000));
+                    break;
+            }
+        }
+    };
 
     public FlutterView(Context context) {
         super(context);
@@ -89,6 +106,10 @@ public class FlutterView extends FrameLayout {
 
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
+
+        if (isAuto && !mHandler.hasMessages(FLUTTER_START)) {
+            mHandler.sendEmptyMessage(FLUTTER_START);
+        }
     }
 
     /**
@@ -210,6 +231,15 @@ public class FlutterView extends FrameLayout {
             }
             mInterpolators.add(i);
         }
+    }
+
+    public void setAuto(boolean auto, float durSecond) {
+        this.isAuto = auto;
+        if (durSecond >= 0.1f) {
+            this.mAutoDurationSecond = durSecond;
+        }
+        mHandler.removeMessages(FLUTTER_START);
+        postInvalidate();
     }
 
     public int getItemWidth() {
