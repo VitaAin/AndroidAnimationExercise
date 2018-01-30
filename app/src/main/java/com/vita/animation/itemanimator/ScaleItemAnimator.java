@@ -28,7 +28,7 @@ public class ScaleItemAnimator extends BaseItemAnimator {
     }
 
     @Override
-    public void addAnimInit(RecyclerView.ViewHolder holder) {
+    public void addAnimatorInit(RecyclerView.ViewHolder holder) {
         View itemView = holder.itemView;
         itemView.setScaleX(0);
         itemView.setScaleY(0);

@@ -35,7 +35,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param holder 添加的ViewHolder
      */
     @Override
-    public void addAnimInit(RecyclerView.ViewHolder holder) {
+    public void addAnimatorInit(RecyclerView.ViewHolder holder) {
         holder.itemView.setAlpha(0);
     }
 

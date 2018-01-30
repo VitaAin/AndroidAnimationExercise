@@ -23,7 +23,7 @@ public class TranslateItemAnimator extends BaseItemAnimator {
     }
 
     @Override
-    public void addAnimInit(RecyclerView.ViewHolder holder) {
+    public void addAnimatorInit(RecyclerView.ViewHolder holder) {
         holder.itemView.setTranslationX(-holder.itemView.getWidth());
     }
 

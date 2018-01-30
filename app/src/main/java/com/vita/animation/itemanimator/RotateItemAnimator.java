@@ -24,7 +24,7 @@ public class RotateItemAnimator extends BaseItemAnimator {
     }
 
     @Override
-    public void addAnimInit(RecyclerView.ViewHolder holder) {
+    public void addAnimatorInit(RecyclerView.ViewHolder holder) {
         holder.itemView.setPivotX(holder.itemView.getWidth());
         holder.itemView.setPivotY(holder.itemView.getHeight() / 2);
         holder.itemView.setRotationY(-90);

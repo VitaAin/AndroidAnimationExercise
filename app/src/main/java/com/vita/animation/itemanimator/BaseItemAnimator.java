@@ -208,7 +208,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     @Override
     public boolean animateAdd(final RecyclerView.ViewHolder holder) {
         resetAnimation(holder);
-        addAnimInit(holder);
+        addAnimatorInit(holder);
         mPendingAdditions.add(holder);
         return true;
     }
@@ -677,7 +677,7 @@ public abstract class BaseItemAnimator extends SimpleItemAnimator {
     /**
      * 添加的item的动画初始化
      */
-    public abstract void addAnimInit(RecyclerView.ViewHolder holder);
+    public abstract void addAnimatorInit(RecyclerView.ViewHolder holder);
 
     /**
      * 设置添加item时的动画
