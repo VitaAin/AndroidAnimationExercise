@@ -38,6 +38,8 @@
         <activity android:name=".instance.AnimInRVActivity">
         </activity>
         <activity android:name=".instance.FlutterActivity">
+        </activity>
+        <activity android:name=".instance.TryBezierActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

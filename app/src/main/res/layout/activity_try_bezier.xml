@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.vita.animation.instance.TryBezierActivity">
+
+    <Button
+        android:id="@+id/btn_bezier_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bezier 1"
+        android:textAllCaps="false"/>
+
+    <FrameLayout
+        android:id="@+id/container_bezier"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.vita.animation.view.Bezier1View
+            android:id="@+id/view_bezier_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ccc"/>
+    </FrameLayout>
+
+</LinearLayout>

@@ -35,6 +35,7 @@ public class InstanceActivity extends AppCompatActivity implements View.OnClickL
         findViewById(R.id.btn_anim_in_rv).setOnClickListener(this);
 
         findViewById(R.id.btn_elegant_leaves).setOnClickListener(this);
+        findViewById(R.id.btn_try_bezier).setOnClickListener(this);
     }
 
     @Override
@@ -68,6 +69,9 @@ public class InstanceActivity extends AppCompatActivity implements View.OnClickL
                 break;
             case R.id.btn_elegant_leaves:
                 clz = FlutterActivity.class;
+                break;
+            case R.id.btn_try_bezier:
+                clz = TryBezierActivity.class;
                 break;
         }
         jumpTo(clz);

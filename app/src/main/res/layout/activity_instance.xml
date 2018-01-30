@@ -70,4 +70,11 @@
         android:text="Elegant Leaves"
         android:textAllCaps="false"/>
 
+    <Button
+        android:id="@+id/btn_try_bezier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Try Bezier"
+        android:textAllCaps="false"/>
+
 </LinearLayout>
