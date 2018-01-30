@@ -57,28 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorPrimary"/>
-
-        <Button
-            android:id="@+id/btn_scatter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scatter"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btn_circle_around"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Circle Around"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btn_ball_fall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ball Fall"
-            android:textAllCaps="false"/>
-
     </LinearLayout>
 
 </ScrollView>

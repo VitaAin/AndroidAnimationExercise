@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context="com.vita.animation.value.BallFallActivity">
+    tools:context="com.vita.animation.instance.BallFallActivity">
 
     <com.vita.animation.view.BallView
         android:id="@+id/ball_view"

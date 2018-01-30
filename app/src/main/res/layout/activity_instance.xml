@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container_other"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#7cadf5"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.vita.animation.instance.InstanceActivity">
+
+    <Button
+        android:id="@+id/btn_trembling"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#b0e97b"
+        android:text="Trembling"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_tv_close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#b0e97b"
+        android:text="TV Close"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_scatter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scatter"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_circle_around"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Circle Around"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_ball_fall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ball Fall"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_anim_in_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Anim in List"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_anim_in_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Anim in RV"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

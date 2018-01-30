@@ -14,7 +14,7 @@ import android.widget.ImageView;
 
 import com.vita.animation.R;
 
-public class ObjectAnimActivity extends AppCompatActivity implements View.OnClickListener {
+public class ObjectAnimActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,6 @@ public class ObjectAnimActivity extends AppCompatActivity implements View.OnClic
         setupObj2();
         setupObj3();
         setupObj4();
-
-        setClickListener();
     }
 
     private void setupObj1() {
@@ -85,33 +83,5 @@ public class ObjectAnimActivity extends AppCompatActivity implements View.OnClic
         animSet.setDuration(3000);
         animSet.setInterpolator(new BounceInterpolator());
         animSet.start();
-    }
-
-    private void setClickListener() {
-        findViewById(R.id.btn_scatter).setOnClickListener(this);
-        findViewById(R.id.btn_circle_around).setOnClickListener(this);
-        findViewById(R.id.btn_ball_fall).setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        Class clz = null;
-        switch (view.getId()) {
-            case R.id.btn_scatter:
-                clz = ScatterActivity.class;
-                break;
-            case R.id.btn_circle_around:
-                clz = CircleAroundActivity.class;
-                break;
-            case R.id.btn_ball_fall:
-                clz = BallFallActivity.class;
-                break;
-        }
-        jumpTo(clz);
-    }
-
-    private void jumpTo(Class clz) {
-        if (clz == null) return;
-        startActivity(new Intent(this, clz));
     }
 }

@@ -6,10 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.vita.animation.R;
-import com.vita.animation.tween.AlphaActivity;
-import com.vita.animation.tween.RotateActivity;
-import com.vita.animation.tween.ScaleActivity;
-import com.vita.animation.tween.TranslateActivity;
+import com.vita.animation.instance.AnimInListActivity;
+import com.vita.animation.instance.AnimInRVActivity;
 
 public class TweenAnimActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,12 +41,6 @@ public class TweenAnimActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.btn_rotate:
                 clz = RotateActivity.class;
-                break;
-            case R.id.btn_anim_in_list:
-                clz = AnimInListActivity.class;
-                break;
-            case R.id.btn_anim_in_rv:
-                clz = AnimInRVActivity.class;
                 break;
         }
         jumpTo(clz);

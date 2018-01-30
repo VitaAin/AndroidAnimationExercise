@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".tween.TweenAnimActivity">
         </activity>
@@ -25,22 +30,17 @@
         </activity>
         <activity android:name=".value.ValueAnimActivity">
         </activity>
-        <activity android:name=".other.OtherActivity">
+        <activity android:name=".instance.InstanceActivity">
         </activity>
-        <activity android:name=".value.ScatterActivity">
+        <activity android:name=".instance.ScatterActivity">
         </activity>
-        <activity android:name=".value.CircleAroundActivity">
+        <activity android:name=".instance.CircleAroundActivity">
         </activity>
-        <activity android:name=".value.BallFallActivity">
+        <activity android:name=".instance.BallFallActivity">
         </activity>
-        <activity android:name=".tween.AnimInListActivity">
+        <activity android:name=".instance.AnimInListActivity">
         </activity>
-        <activity android:name=".tween.AnimInRVActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+        <activity android:name=".instance.AnimInRVActivity">
         </activity>
     </application>
 

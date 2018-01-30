@@ -42,20 +42,6 @@
             android:text="Rotate"
             android:textAllCaps="false"/>
 
-        <Button
-            android:id="@+id/btn_anim_in_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Anim in List"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btn_anim_in_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Anim in RV"
-            android:textAllCaps="false"/>
-
     </LinearLayout>
 
 </ScrollView>

@@ -1,4 +1,4 @@
-package com.vita.animation.other;
+package com.vita.animation.instance;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,14 +9,14 @@ import com.vita.animation.R;
 import com.vita.animation.animation.TVCloseAnimation;
 import com.vita.animation.animation.TremblingAnimation;
 
-public class OtherActivity extends AppCompatActivity implements View.OnClickListener {
+public class InstanceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private View mContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_other);
+        setContentView(R.layout.activity_instance);
 
         mContainer = findViewById(R.id.container_other);
 
@@ -26,10 +26,18 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
     private void setClickListener() {
         findViewById(R.id.btn_trembling).setOnClickListener(this);
         findViewById(R.id.btn_tv_close).setOnClickListener(this);
+
+        findViewById(R.id.btn_scatter).setOnClickListener(this);
+        findViewById(R.id.btn_circle_around).setOnClickListener(this);
+        findViewById(R.id.btn_ball_fall).setOnClickListener(this);
+
+        findViewById(R.id.btn_anim_in_list).setOnClickListener(this);
+        findViewById(R.id.btn_anim_in_rv).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+        Class clz = null;
         switch (view.getId()) {
             case R.id.btn_trembling:
                 TremblingAnimation tremblingAnim = new TremblingAnimation();
@@ -41,7 +49,23 @@ public class OtherActivity extends AppCompatActivity implements View.OnClickList
                 TVCloseAnimation tvCloseAnimation = new TVCloseAnimation();
                 mContainer.startAnimation(tvCloseAnimation);
                 break;
+            case R.id.btn_scatter:
+                clz = ScatterActivity.class;
+                break;
+            case R.id.btn_circle_around:
+                clz = CircleAroundActivity.class;
+                break;
+            case R.id.btn_ball_fall:
+                clz = BallFallActivity.class;
+                break;
+            case R.id.btn_anim_in_list:
+                clz = AnimInListActivity.class;
+                break;
+            case R.id.btn_anim_in_rv:
+                clz = AnimInRVActivity.class;
+                break;
         }
+        jumpTo(clz);
     }
 
     private void jumpTo(Class clz) {

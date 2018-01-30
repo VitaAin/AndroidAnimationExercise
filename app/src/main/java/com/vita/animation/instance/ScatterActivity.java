@@ -1,4 +1,4 @@
-package com.vita.animation.value;
+package com.vita.animation.instance;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

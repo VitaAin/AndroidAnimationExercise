@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.vita.animation.value.ObjectAnimActivity;
 import com.vita.animation.value.ValueAnimActivity;
-import com.vita.animation.other.OtherActivity;
+import com.vita.animation.instance.InstanceActivity;
 import com.vita.animation.tween.TweenAnimActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 clz = ValueAnimActivity.class;
                 break;
             case R.id.btn_other:
-                clz = OtherActivity.class;
+                clz = InstanceActivity.class;
                 break;
         }
         jumpTo(clz);

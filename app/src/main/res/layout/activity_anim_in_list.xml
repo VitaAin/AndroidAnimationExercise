@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.vita.animation.tween.AnimInListActivity">
+    tools:context="com.vita.animation.instance.AnimInListActivity">
 
     <!--android:layoutAnimation="@anim/layout_anim_lv_1"-->
     <ListView

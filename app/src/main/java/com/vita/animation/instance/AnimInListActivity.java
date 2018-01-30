@@ -1,4 +1,4 @@
-package com.vita.animation.tween;
+package com.vita.animation.instance;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
