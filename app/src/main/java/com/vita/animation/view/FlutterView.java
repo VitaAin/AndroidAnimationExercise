@@ -8,7 +8,6 @@ import android.content.Context;
 import android.graphics.PointF;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -27,7 +26,6 @@ import com.vita.animation.R;
 import com.vita.animation.evaluator.BezierEvaluator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +40,12 @@ public class FlutterView extends FrameLayout {
 
     private static final String TAG = "FlutterLayout";
 
+    private int[] mItemResId = {
+            R.drawable.ic_favorite_blue_24dp, R.drawable.ic_favorite_cyan_24dp,
+            R.drawable.ic_favorite_green_24dp, R.drawable.ic_favorite_orange_24dp,
+            R.drawable.ic_favorite_pink_24dp, R.drawable.ic_favorite_purpose_24dp,
+            R.drawable.ic_favorite_red_24dp, R.drawable.ic_favorite_yellow_24dp
+    };
     private LayoutParams mItemLp;
     private Random mRandom = new Random();
     private int mWidth, mHeight; // 整个View（容器）的宽、高
@@ -194,7 +198,7 @@ public class FlutterView extends FrameLayout {
 
     public void addItem() {
         ImageView ivItem = new ImageView(getContext());
-        ivItem.setImageResource(R.drawable.ic_favorite_24dp);
+        ivItem.setImageResource(mItemResId[mRandom.nextInt(mItemResId.length)]);
         ivItem.setLayoutParams(mItemLp);
 
         if (mItemWidth == 0) {
