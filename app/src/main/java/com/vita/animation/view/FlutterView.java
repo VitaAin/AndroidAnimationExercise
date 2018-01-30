@@ -42,8 +42,8 @@ public class FlutterView extends FrameLayout {
 
     private LayoutParams mItemLp;
     private Random mRandom = new Random();
-    private int mWidth, mHeight;
-    private int mItemWidth, mItemHeight;
+    private int mWidth, mHeight; // 整个View（容器）的宽、高
+    private int mItemWidth, mItemHeight; // item的宽、高
     private List<Interpolator> mInterpolators;
 
     public FlutterView(Context context) {
@@ -91,13 +91,16 @@ public class FlutterView extends FrameLayout {
         mHeight = getMeasuredHeight();
     }
 
+    /**
+     * item运动路线（这里使用的是贝塞尔曲线）动画
+     */
     private ValueAnimator getItemPathAnim(final View target) {
         BezierEvaluator bezierEvaluator = new BezierEvaluator(getRandomPoint(2), getRandomPoint(1));
 
         PointF startPoint = new PointF((mWidth - mItemWidth) / 2, mHeight - mItemHeight);
         PointF endPoint = new PointF(mRandom.nextInt(getWidth()), 0);
-        ValueAnimator valueAnim = ValueAnimator.ofObject(bezierEvaluator,
-                startPoint, endPoint);
+        ValueAnimator valueAnim = ValueAnimator.ofObject(
+                bezierEvaluator, startPoint, endPoint);
         valueAnim.setTarget(target);
         valueAnim.setDuration(3000);
         valueAnim.addUpdateListener(new BezierAnimUpdateListener(target));
@@ -126,14 +129,21 @@ public class FlutterView extends FrameLayout {
         return valueAnim;
     }
 
+    /**
+     * 获取贝塞尔曲线中间路过的点
+     */
     private PointF getRandomPoint(int scale) {
         PointF pointF = new PointF();
-        pointF.x = mRandom.nextInt((mWidth - 100));
+        pointF.x = mRandom.nextInt((mWidth - 100));// 减去100是为了控制x轴活动范围
+        // 在y轴上，为了确保第二个点在第一个点之上，把y分成了上下两半，这样动画效果好一些，也可以用其他方法
         pointF.y = mRandom.nextInt((mHeight - 100)) / scale;
 
         return pointF;
     }
 
+    /**
+     * item被添加时的动画
+     */
     private AnimatorSet getItemAddAnim(View target) {
         ObjectAnimator scaleX = ObjectAnimator.ofFloat(target, "scaleX", 0.2f, 1);
         ObjectAnimator scaleY = ObjectAnimator.ofFloat(target, "scaleY", 0.2f, 1);
