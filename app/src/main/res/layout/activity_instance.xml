@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container_other"
+    android:id="@+id/container_instance"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#7cadf5"
@@ -61,6 +61,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Anim in RV"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_elegant_leaves"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elegant Leaves"
         android:textAllCaps="false"/>
 
 </LinearLayout>

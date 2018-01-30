@@ -10,11 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".tween.TweenAnimActivity">
         </activity>
@@ -41,6 +36,13 @@
         <activity android:name=".instance.AnimInListActivity">
         </activity>
         <activity android:name=".instance.AnimInRVActivity">
+        </activity>
+        <activity android:name=".instance.FlutterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 
