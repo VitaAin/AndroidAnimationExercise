@@ -17,7 +17,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param animator 被移动的ViewHolder对应动画对象
      */
     @Override
-    public void setRemoveAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setRemoveAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.alpha(0);
     }
 
@@ -26,7 +26,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param holder 被移除的ViewHolder
      */
     @Override
-    public void removeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onRemoveAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setAlpha(1);
     }
 
@@ -45,7 +45,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param animator 添加的ViewHolder对应动画对象
      */
     @Override
-    public void setAddAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setAddAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.alpha(1);
     }
 
@@ -54,7 +54,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param holder 添加的ViewHolder
      */
     @Override
-    public void addAnimCancel(RecyclerView.ViewHolder holder) {
+    public void addAnimatorCancel(RecyclerView.ViewHolder holder) {
         holder.itemView.setAlpha(1);
     }
 
@@ -64,7 +64,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param animator ViewHolder对应动画对象
      */
     @Override
-    public void setOldChangeAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setOldChangeAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.alpha(0);
     }
 
@@ -73,7 +73,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param holder
      */
     @Override
-    public void oldChangeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onOldChangeAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setAlpha(1);
     }
 
@@ -82,7 +82,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param holder 更新时新的ViewHolder
      */
     @Override
-    public void newChangeAnimInit(RecyclerView.ViewHolder holder) {
+    public void newChangeAnimatorInit(RecyclerView.ViewHolder holder) {
         holder.itemView.setAlpha(0);
     }
 
@@ -92,7 +92,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param animator ViewHolder对应动画对象
      */
     @Override
-    public void setNewChangeAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setNewChangeAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.alpha(1);
     }
 
@@ -101,7 +101,7 @@ public class FadeItemAnimator extends BaseItemAnimator {
      * @param holder
      */
     @Override
-    public void newChangeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onNewChangeAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setAlpha(1);
     }
 }

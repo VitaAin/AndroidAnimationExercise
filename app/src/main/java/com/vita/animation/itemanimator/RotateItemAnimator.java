@@ -12,14 +12,14 @@ import android.view.ViewPropertyAnimator;
 public class RotateItemAnimator extends BaseItemAnimator {
 
     @Override
-    public void setRemoveAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setRemoveAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         holder.itemView.setPivotX(0);
         holder.itemView.setPivotY(holder.itemView.getHeight() / 2);
         animator.rotationY(90);
     }
 
     @Override
-    public void removeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onRemoveAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setRotationY(0);
     }
 
@@ -31,41 +31,41 @@ public class RotateItemAnimator extends BaseItemAnimator {
     }
 
     @Override
-    public void setAddAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setAddAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.rotationY(0);
     }
 
     @Override
-    public void addAnimCancel(RecyclerView.ViewHolder holder) {
+    public void addAnimatorCancel(RecyclerView.ViewHolder holder) {
         holder.itemView.setRotationY(0);
     }
 
     @Override
-    public void setOldChangeAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setOldChangeAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         holder.itemView.setPivotX(holder.itemView.getWidth() / 2);
         holder.itemView.setPivotY(holder.itemView.getHeight() / 2);
         animator.rotationY(90);
     }
 
     @Override
-    public void oldChangeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onOldChangeAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setRotationY(0);
     }
 
     @Override
-    public void newChangeAnimInit(RecyclerView.ViewHolder holder) {
+    public void newChangeAnimatorInit(RecyclerView.ViewHolder holder) {
         holder.itemView.setPivotX(holder.itemView.getWidth() / 2);
         holder.itemView.setPivotY(holder.itemView.getHeight() / 2);
         holder.itemView.setRotationY(-90);
     }
 
     @Override
-    public void setNewChangeAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setNewChangeAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.rotationY(0).setStartDelay(getChangeDuration());
     }
 
     @Override
-    public void newChangeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onNewChangeAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setRotationY(0);
         holder.itemView.animate().setStartDelay(0);
     }

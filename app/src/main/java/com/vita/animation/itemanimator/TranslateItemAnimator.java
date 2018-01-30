@@ -13,12 +13,12 @@ import android.view.ViewPropertyAnimator;
 public class TranslateItemAnimator extends BaseItemAnimator {
 
     @Override
-    public void setRemoveAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setRemoveAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.translationX(-holder.itemView.getWidth());
     }
 
     @Override
-    public void removeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onRemoveAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setTranslationX(0);
     }
 
@@ -28,37 +28,37 @@ public class TranslateItemAnimator extends BaseItemAnimator {
     }
 
     @Override
-    public void setAddAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setAddAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.translationX(0);
     }
 
     @Override
-    public void addAnimCancel(RecyclerView.ViewHolder holder) {
+    public void addAnimatorCancel(RecyclerView.ViewHolder holder) {
         holder.itemView.setTranslationX(0);
     }
 
     @Override
-    public void setOldChangeAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setOldChangeAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.translationX(-holder.itemView.getWidth());
     }
 
     @Override
-    public void oldChangeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onOldChangeAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setTranslationX(0);
     }
 
     @Override
-    public void newChangeAnimInit(RecyclerView.ViewHolder holder) {
+    public void newChangeAnimatorInit(RecyclerView.ViewHolder holder) {
         holder.itemView.setTranslationX(holder.itemView.getWidth());
     }
 
     @Override
-    public void setNewChangeAnim(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
+    public void setNewChangeAnimator(RecyclerView.ViewHolder holder, ViewPropertyAnimator animator) {
         animator.translationX(0);
     }
 
     @Override
-    public void newChangeAnimEnd(RecyclerView.ViewHolder holder) {
+    public void onNewChangeAnimatorEnd(RecyclerView.ViewHolder holder) {
         holder.itemView.setTranslationX(0);
     }
 }
