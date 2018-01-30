@@ -174,7 +174,7 @@ public class FlutterView extends FrameLayout {
         }
 
         addView(ivItem);
-        Log.d(TAG, "addItem: childCount:: " + getChildCount());
+//        Log.d(TAG, "addItem: childCount:: " + getChildCount());
 
         getItemAllAnim(ivItem).start();
     }
@@ -182,17 +182,17 @@ public class FlutterView extends FrameLayout {
     @Override
     public void onViewRemoved(View child) {
         super.onViewRemoved(child);
-        Log.d(TAG, "onViewRemoved");
+//        Log.d(TAG, "onViewRemoved");
         child = null;
     }
 
-    public void addInterpolators(Interpolator... interpolators) {
+    public void setInterpolators(Interpolator... interpolators) {
         if (interpolators == null || interpolators.length == 0) return;
         mInterpolators.clear();
         Collections.addAll(mInterpolators, interpolators);
     }
 
-    public void setInterpolators(Interpolator... interpolators) {
+    public void addInterpolators(Interpolator... interpolators) {
         if (interpolators == null || interpolators.length == 0) return;
         for (Interpolator i : interpolators) {
             if (mInterpolators.contains(i)) {
@@ -202,9 +202,17 @@ public class FlutterView extends FrameLayout {
         }
     }
 
+    public int getItemWidth() {
+        return mItemWidth;
+    }
+
     public void setItemWidth(int itemWidth) {
         mItemWidth = itemWidth;
         mItemLp.width = itemWidth;
+    }
+
+    public int getItemHeight() {
+        return mItemHeight;
     }
 
     public void setItemHeight(int itemHeight) {
