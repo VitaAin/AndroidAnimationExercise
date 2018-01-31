@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.vita.animation.R;
 import com.vita.animation.view.Bezier1View;
+import com.vita.animation.view.WaveView;
 
 public class TryBezierActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,6 +26,7 @@ public class TryBezierActivity extends AppCompatActivity implements View.OnClick
 
     private void setClickListener() {
         findViewById(R.id.btn_bezier_1).setOnClickListener(this);
+        findViewById(R.id.btn_bezier_2).setOnClickListener(this);
     }
 
     @Override
@@ -33,8 +35,15 @@ public class TryBezierActivity extends AppCompatActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.btn_bezier_1:
                 Bezier1View bezier1 = (Bezier1View) findViewById(R.id.view_bezier_1);
+                findViewById(R.id.view_wave).setVisibility(View.GONE);
                 bezier1.setVisibility(View.VISIBLE);
                 bezier1.addCircle();
+                break;
+            case R.id.btn_bezier_2:
+                WaveView waveView = (WaveView) findViewById(R.id.view_wave);
+                waveView.setVisibility(View.VISIBLE);
+                findViewById(R.id.view_bezier_1).setVisibility(View.GONE);
+                waveView.startAnim();
                 break;
         }
 //        jumpTo(clz);

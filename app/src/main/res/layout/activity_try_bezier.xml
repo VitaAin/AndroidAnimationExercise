@@ -9,12 +9,28 @@
     android:padding="16dp"
     tools:context="com.vita.animation.instance.TryBezierActivity">
 
-    <Button
-        android:id="@+id/btn_bezier_1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bezier 1"
-        android:textAllCaps="false"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_bezier_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Bezier 1"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_bezier_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Bezier 2"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/container_bezier"
@@ -25,7 +41,14 @@
             android:id="@+id/view_bezier_1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ccc"/>
+            android:background="#ccc"
+            android:visibility="gone"/>
+
+        <com.vita.animation.view.WaveView
+            android:id="@+id/view_wave"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#aaccff"/>
     </FrameLayout>
 
 </LinearLayout>
