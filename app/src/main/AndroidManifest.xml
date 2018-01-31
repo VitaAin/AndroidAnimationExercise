@@ -44,6 +44,8 @@
         <activity android:name=".instance.ShoppingCartActivity">
         </activity>
         <activity android:name=".instance.Jelly1Activity">
+        </activity>
+        <activity android:name=".instance.StickyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
