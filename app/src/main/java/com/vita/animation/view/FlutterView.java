@@ -53,7 +53,7 @@ public class FlutterView extends FrameLayout {
     private List<Interpolator> mInterpolators;
     private boolean isAuto = false;
     private float mAutoDurationSecond = 1.5f; // unit: s
-    private static final int FLUTTER_START = 0x77;
+    private static final int FLUTTER_START = 0x70;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

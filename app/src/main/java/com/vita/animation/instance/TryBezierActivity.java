@@ -1,6 +1,7 @@
 package com.vita.animation.instance;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,10 +41,9 @@ public class TryBezierActivity extends AppCompatActivity implements View.OnClick
                 bezier1.addCircle();
                 break;
             case R.id.btn_bezier_2:
-                WaveView waveView = (WaveView) findViewById(R.id.view_wave);
+                final WaveView waveView = (WaveView) findViewById(R.id.view_wave);
                 waveView.setVisibility(View.VISIBLE);
                 findViewById(R.id.view_bezier_1).setVisibility(View.GONE);
-                waveView.startAnim();
                 break;
         }
 //        jumpTo(clz);

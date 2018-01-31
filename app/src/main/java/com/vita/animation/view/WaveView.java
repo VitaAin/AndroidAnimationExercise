@@ -22,6 +22,8 @@ public class WaveView extends View {
     private static final String TAG = "WaveView";
 
     private int mWaveHeight = 120;
+    private int mWaveRise = 0; // 涨幅
+    private int mBasicLineHeight;
     private Paint mPaint;
     private int mWidth;
     private int mHeight;
@@ -53,6 +55,9 @@ public class WaveView extends View {
 
         mWidth = getMeasuredWidth();
         mHeight = getMeasuredHeight();
+        mBasicLineHeight = mHeight / 2;
+
+        startAnim();
     }
 
     @Override
@@ -65,27 +70,26 @@ public class WaveView extends View {
     private void drawPath(Canvas canvas) {
         Path path = new Path();
         // 屏幕外的一周期正弦函数 start
-        path.moveTo(-mWidth + mOffset, mHeight / 2);
-        path.quadTo(-mWidth * 3 / 4 + mOffset, mHeight / 2 - mWaveHeight,
-                -mWidth / 2 + mOffset, mHeight / 2);
-        path.quadTo(-mWidth / 4 + mOffset, mHeight / 2 + mWaveHeight,
-                0 + mOffset, mHeight / 2);
+        path.moveTo(-mWidth + mOffset, mBasicLineHeight);
+        path.quadTo(-mWidth * 3 / 4 + mOffset, mBasicLineHeight - mWaveHeight,
+                -mWidth / 2 + mOffset, mBasicLineHeight);
+        path.quadTo(-mWidth / 4 + mOffset, mBasicLineHeight + mWaveHeight,
+                0 + mOffset, mBasicLineHeight);
         // 屏幕外的一周期正弦函数 end
         // 一周期的正弦函数 start
-//        path.moveTo(0, mHeight / 2);
-        path.quadTo(mWidth / 4 + mOffset, mHeight / 2 - mWaveHeight,
-                mWidth / 2 + mOffset, mHeight / 2);
-        path.quadTo(mWidth * 3 / 4 + mOffset, mHeight / 2 + mWaveHeight,
-                mWidth + mOffset, mHeight / 2);
+        path.quadTo(mWidth / 4 + mOffset, mBasicLineHeight - mWaveHeight,
+                mWidth / 2 + mOffset, mBasicLineHeight);
+        path.quadTo(mWidth * 3 / 4 + mOffset, mBasicLineHeight + mWaveHeight,
+                mWidth + mOffset, mBasicLineHeight);
         // 一周期的正弦函数 end
         path.lineTo(mWidth, mHeight);
         path.lineTo(0, mHeight);
         canvas.drawPath(path, mPaint);
-        mWaveHeight += 10;
+        mBasicLineHeight -= mWaveRise;
     }
 
-    public void startAnim() {
-        Log.d(TAG, "startAnim: " + mWidth);
+    private void startAnim() {
+//        Log.d(TAG, "startAnim: " + mWidth);
         ValueAnimator anim = ValueAnimator.ofInt(0, mWidth);
         anim.setDuration(1500);
         anim.setRepeatCount(ValueAnimator.INFINITE);
@@ -99,5 +103,21 @@ public class WaveView extends View {
             }
         });
         anim.start();
+    }
+
+    public int getWaveHeight() {
+        return mWaveHeight;
+    }
+
+    public void setWaveHeight(int waveHeight) {
+        mWaveHeight = waveHeight;
+    }
+
+    public int getBasicLineHeight() {
+        return mBasicLineHeight;
+    }
+
+    public void setBasicLineHeight(int basicLineHeight) {
+        mBasicLineHeight = basicLineHeight;
     }
 }
