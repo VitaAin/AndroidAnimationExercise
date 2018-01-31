@@ -10,7 +10,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.vita.animation.R;
-import com.vita.animation.evaluator.BezierEvaluator;
+import com.vita.animation.evaluator.ThirdOrderBezierEvaluator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,7 +59,7 @@ public class FlutterView extends FrameLayout {
             switch (msg.what) {
                 case FLUTTER_START:
                     addItem();
-                    mHandler.sendEmptyMessageDelayed(FLUTTER_START,
+                    sendEmptyMessageDelayed(FLUTTER_START,
                             (long) (mAutoDurationSecond * 1000));
                     break;
             }
@@ -120,7 +119,7 @@ public class FlutterView extends FrameLayout {
      * item运动路线（这里使用的是贝塞尔曲线）动画
      */
     private ValueAnimator getItemPathAnim(final View target) {
-        BezierEvaluator bezierEvaluator = new BezierEvaluator(getRandomPoint(2), getRandomPoint(1));
+        ThirdOrderBezierEvaluator bezierEvaluator = new ThirdOrderBezierEvaluator(getRandomPoint(2), getRandomPoint(1));
 
         PointF startPoint = new PointF((mWidth - mItemWidth) / 2, mHeight - mItemHeight);
         PointF endPoint = new PointF(mRandom.nextInt(getWidth()), 0);
@@ -201,10 +200,10 @@ public class FlutterView extends FrameLayout {
         ivItem.setImageResource(mItemResId[mRandom.nextInt(mItemResId.length)]);
         ivItem.setLayoutParams(mItemLp);
 
-        if (mItemWidth == 0) {
+        if (mItemWidth <= 0) {
             mItemWidth = ivItem.getDrawable().getIntrinsicWidth();
         }
-        if (mItemHeight == 0) {
+        if (mItemHeight <= 0) {
             mItemHeight = ivItem.getDrawable().getIntrinsicHeight();
         }
 

@@ -1,7 +1,6 @@
 package com.vita.animation.instance;
 
 import android.content.Intent;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.vita.animation.R;
 import com.vita.animation.view.Bezier1View;
+import com.vita.animation.view.Bezier2View;
 import com.vita.animation.view.WaveView;
 
 public class TryBezierActivity extends AppCompatActivity implements View.OnClickListener {
@@ -28,25 +28,38 @@ public class TryBezierActivity extends AppCompatActivity implements View.OnClick
     private void setClickListener() {
         findViewById(R.id.btn_bezier_1).setOnClickListener(this);
         findViewById(R.id.btn_bezier_2).setOnClickListener(this);
+        findViewById(R.id.btn_wave_view).setOnClickListener(this);
+        findViewById(R.id.btn_shopping_cart).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-//        Class clz = null;
+        Class clz = null;
         switch (view.getId()) {
             case R.id.btn_bezier_1:
                 Bezier1View bezier1 = (Bezier1View) findViewById(R.id.view_bezier_1);
-                findViewById(R.id.view_wave).setVisibility(View.GONE);
                 bezier1.setVisibility(View.VISIBLE);
+                findViewById(R.id.view_bezier_2).setVisibility(View.GONE);
+                findViewById(R.id.view_wave).setVisibility(View.GONE);
                 bezier1.addCircle();
                 break;
             case R.id.btn_bezier_2:
-                final WaveView waveView = (WaveView) findViewById(R.id.view_wave);
+                Bezier2View bezier2 = (Bezier2View) findViewById(R.id.view_bezier_2);
+                bezier2.setVisibility(View.VISIBLE);
+                findViewById(R.id.view_bezier_1).setVisibility(View.GONE);
+                findViewById(R.id.view_wave).setVisibility(View.GONE);
+                break;
+            case R.id.btn_wave_view:
+                WaveView waveView = (WaveView) findViewById(R.id.view_wave);
                 waveView.setVisibility(View.VISIBLE);
                 findViewById(R.id.view_bezier_1).setVisibility(View.GONE);
+                findViewById(R.id.view_bezier_2).setVisibility(View.GONE);
+                break;
+            case R.id.btn_shopping_cart:
+                clz = ShoppingCartActivity.class;
                 break;
         }
-//        jumpTo(clz);
+        jumpTo(clz);
     }
 
     private void jumpTo(Class clz) {

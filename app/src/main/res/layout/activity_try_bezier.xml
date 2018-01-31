@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Bezier 1"
+            android:text="Bezier1"
             android:textAllCaps="false"/>
 
         <Button
@@ -27,7 +27,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Bezier 2"
+            android:text="Bezier2"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_wave_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Wave"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_shopping_cart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cart"
             android:textAllCaps="false"/>
 
     </LinearLayout>
@@ -44,11 +60,18 @@
             android:background="#ccc"
             android:visibility="gone"/>
 
+        <com.vita.animation.view.Bezier2View
+            android:id="@+id/view_bezier_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#d1f4df"/>
+
         <com.vita.animation.view.WaveView
             android:id="@+id/view_wave"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#aaccff"/>
+            android:background="#aaccff"
+            android:visibility="gone"/>
     </FrameLayout>
 
 </LinearLayout>

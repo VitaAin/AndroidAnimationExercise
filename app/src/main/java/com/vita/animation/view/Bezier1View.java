@@ -79,7 +79,7 @@ public class Bezier1View extends FrameLayout {
         path.quadTo(50 + CIRCLE_RADIUS, 500 + CIRCLE_RADIUS,
                 300 + CIRCLE_RADIUS, 700 + CIRCLE_RADIUS);
         // 绘制贝塞尔曲线
-        // cubicTo(x1, y1, x2, y2, x3, y3), (x1,y1)为控制点，(x2,y2)为控制点，(x3,y3)为结束点
+        // cubicTo(x1, y1, x2, y2, x3, y3), (x1,y1)、(x2,y2)为控制点，(x3,y3)为结束点
         path.cubicTo(600 + CIRCLE_RADIUS, 600 + CIRCLE_RADIUS,
                 500 + CIRCLE_RADIUS, 250 + CIRCLE_RADIUS,
                 50 + CIRCLE_RADIUS, 800 + CIRCLE_RADIUS);
@@ -123,8 +123,4 @@ public class Bezier1View extends FrameLayout {
 
         return ivCircle;
     }
-
-//    private void startAnim(){
-//        ObjectAnimator anim = ObjectAnimator.ofObject(mPoint,"x")
-//    }
 }
