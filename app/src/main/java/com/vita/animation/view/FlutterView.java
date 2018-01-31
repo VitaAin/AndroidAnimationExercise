@@ -1,6 +1,7 @@
 package com.vita.animation.view;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -128,25 +129,11 @@ public class FlutterView extends FrameLayout {
         valueAnim.setTarget(target);
         valueAnim.setDuration(3000);
         valueAnim.addUpdateListener(new BezierAnimUpdateListener(target));
-        valueAnim.addListener(new Animator.AnimatorListener() {
+        valueAnim.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 removeView(target);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
             }
         });
 

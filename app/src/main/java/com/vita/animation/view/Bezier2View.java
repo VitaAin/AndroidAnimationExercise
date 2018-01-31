@@ -1,14 +1,19 @@
 package com.vita.animation.view;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.vita.animation.R;
+import com.vita.animation.evaluator.ThirdOrderBezierEvaluator;
 
 import java.util.Random;
 
@@ -41,7 +47,8 @@ public class Bezier2View extends FrameLayout {
             R.drawable.ic_favorite_red_24dp, R.drawable.ic_favorite_yellow_24dp
     };
     private Random mRandom = new Random();
-    private Paint mPathPaint;
+    private Paint mPathPaint, mItemPaint;
+    private Bitmap mBitmap;
     private int mWidth;
     private int mHeight;
     private LayoutParams mItemLp;
@@ -75,10 +82,15 @@ public class Bezier2View extends FrameLayout {
     }
 
     private void init() {
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_favorite_24dp);
+
         mPathPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPathPaint.setColor(Color.BLUE);
         mPathPaint.setStrokeWidth(4);
         mPathPaint.setStyle(Paint.Style.STROKE);
+
+        mItemPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mItemPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         mItemLp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
@@ -122,38 +134,32 @@ public class Bezier2View extends FrameLayout {
 
         mItemAnim = getItemAnim(ivItem);
         mItemAnim.start();
-        mItemAnim.addListener(new Animator.AnimatorListener() {
+        mItemAnim.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 removeView(ivItem);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
             }
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private Animator getItemAnim(final View target) {
-        Path path = new Path();
-        path.moveTo(mWidth / 2, mHeight);
-        path.cubicTo(mWidth, mHeight * 3 / 4,
-                0, mHeight / 4,
-                mWidth / 2, 0);
-
-        ObjectAnimator anim = ObjectAnimator.ofFloat(target, View.X, View.Y, path);
+        PointF startPoint = new PointF(mWidth / 2, mHeight);
+        PointF endPoint = new PointF(mWidth / 2, 0);
+        PointF ctrlPointF1 = new PointF(mWidth, mHeight * 3 / 4);
+        PointF ctrlPointF2 = new PointF(0, mHeight / 4);
+        ThirdOrderBezierEvaluator evaluator =
+                new ThirdOrderBezierEvaluator(ctrlPointF1, ctrlPointF2);
+        ValueAnimator anim = ValueAnimator.ofObject(evaluator, startPoint, endPoint);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                PointF point = (PointF) valueAnimator.getAnimatedValue();
+                target.setX(point.x);
+                target.setY(point.y);
+                target.setAlpha(1 - valueAnimator.getAnimatedFraction());
+            }
+        });
         anim.setDuration(5000);
 
         return anim;
