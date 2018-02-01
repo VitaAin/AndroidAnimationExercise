@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -81,11 +82,21 @@ public class FlowPointLoadingView extends View {
     }
 
     private void drawFlowPoint(Canvas canvas) {
-        canvas.drawCircle(mWidth / 7, mHeight / 2, mCircleRadius / 2, mCirclePaint);
+        canvas.drawCircle(mWidth / 7 + 60, mHeight / 2, mCircleRadius / 2, mCirclePaint);
     }
 
     private void drawPath(Canvas canvas) {
+        PointF ctrlPoint = new PointF(mWidth / 7 + 30, mHeight / 2);
 
+        Path path = new Path();
+        PointF[] fixedCutoffPoints0 = getFixedCutoffPoints(0);
+        path.moveTo(fixedCutoffPoints0[0].x, fixedCutoffPoints0[0].y);
+        path.quadTo(ctrlPoint.x, ctrlPoint.y, mWidth / 7 + 60, mHeight / 2 - mCircleRadius / 2);
+        path.lineTo(mWidth / 7 + 60, mHeight / 2 + mCircleRadius / 2);
+        path.quadTo(ctrlPoint.x, ctrlPoint.y, mWidth / 7, mHeight / 2 + mCircleRadius / 2);
+        path.lineTo(mWidth / 7, mHeight / 2 - mCircleRadius / 2);
+        path.close();
+        canvas.drawPath(path, mCirclePaint);
     }
 
     private PointF getCtrlPoint() {
