@@ -104,7 +104,7 @@ public class AnimInRVActivity extends AppCompatActivity implements View.OnClickL
         return super.onOptionsItemSelected(item);
     }
 
-    class RvAdapter extends RecyclerView.Adapter {
+    private class RvAdapter extends RecyclerView.Adapter {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.item_lv_1, null);

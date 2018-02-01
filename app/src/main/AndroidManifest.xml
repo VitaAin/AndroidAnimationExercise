@@ -45,7 +45,9 @@
         </activity>
         <activity android:name=".instance.Jelly1Activity">
         </activity>
-        <activity android:name=".instance.StickyActivity">
+        <activity android:name=".instance.StickyCircleActivity">
+        </activity>
+        <activity android:name=".instance.StickyCircleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

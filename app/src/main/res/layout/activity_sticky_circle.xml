@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context="com.vita.animation.instance.StickyActivity">
+    tools:context="com.vita.animation.instance.StickyCircleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_sticky_1"
+            android:id="@+id/btn_sticky_circle_in_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

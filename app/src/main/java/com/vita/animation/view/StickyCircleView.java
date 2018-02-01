@@ -24,11 +24,11 @@ public class StickyCircleView extends View {
     private static final String TAG = "StickyCircleView";
 
     private Paint mPaint;
-    private PointF mFixedCircleCenter = new PointF(700, 800); // 固定圆的圆心坐标
     private float mCircleRadiusDefault = 20;
     private float mFixedCircleRadius = mCircleRadiusDefault;
-    private PointF mDraggedCircleCenter = new PointF(700, 800); // 拖拽圆的圆心坐标
     private float mDraggedCircleRadius = mCircleRadiusDefault;
+    private PointF mFixedCircleCenter = new PointF(mCircleRadiusDefault, mCircleRadiusDefault); // 固定圆的圆心坐标
+    private PointF mDraggedCircleCenter = new PointF(mCircleRadiusDefault, mCircleRadiusDefault); // 拖拽圆的圆心坐标
     private float mMaxDistance = 120; // 两圆心间最大距离
     private boolean isOutOfRange = false;
     private boolean isDisappear = false;
