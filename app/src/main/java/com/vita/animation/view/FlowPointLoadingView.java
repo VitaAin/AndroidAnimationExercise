@@ -31,7 +31,6 @@ public class FlowPointLoadingView extends View {
     private ValueAnimator mAnim;
     private int mCurPos;
     private Path mPath;
-    private int mDirection = 1; // 1: left to right, -1: right to left
 
     public FlowPointLoadingView(Context context) {
         super(context);
@@ -162,7 +161,6 @@ public class FlowPointLoadingView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float value = (float) valueAnimator.getAnimatedValue();
-                mDirection = (value - mFlowPoint.x) > 0 ? 1 : -1;
                 mFlowPoint.x = value;
                 invalidate();
             }
