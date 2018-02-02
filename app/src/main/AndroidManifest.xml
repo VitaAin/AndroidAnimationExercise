@@ -50,6 +50,8 @@
         <activity android:name=".instance.StickyCircleListActivity">
         </activity>
         <activity android:name=".instance.FlowPointLoadingActivity">
+        </activity>
+        <activity android:name=".instance.LoopBeadLoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

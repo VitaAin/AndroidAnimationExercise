@@ -96,4 +96,11 @@
         android:gravity="center"
         android:text="------- Jelly End ------"/>
 
+    <TextView
+        android:id="@+id/btn_flow_point_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Floe Point Loading"
+        android:textAllCaps="false"/>
+
 </LinearLayout>

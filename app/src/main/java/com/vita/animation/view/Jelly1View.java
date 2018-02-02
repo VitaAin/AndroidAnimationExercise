@@ -17,7 +17,7 @@ import android.view.animation.BounceInterpolator;
  * @Author: Vita
  * @Date: 2018-01-31 16:06
  * @Usage:
- * @From: http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2017/0318/7697.html
+ * @Reference: http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2017/0318/7697.html
  */
 public class Jelly1View extends View {
 

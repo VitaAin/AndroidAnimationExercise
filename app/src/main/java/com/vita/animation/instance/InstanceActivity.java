@@ -76,6 +76,9 @@ public class InstanceActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_jelly_1:
                 clz = Jelly1Activity.class;
                 break;
+            case R.id.btn_flow_point_loading:
+                clz = FlowPointLoadingActivity.class;
+                break;
         }
         jumpTo(clz);
     }
