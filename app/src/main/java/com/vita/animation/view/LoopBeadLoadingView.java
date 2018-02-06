@@ -212,7 +212,7 @@ public class LoopBeadLoadingView extends View {
 //        mTextPaint.setTextSize(mTextSize);
         for (int i = 0; i <= mTextPos; i++) {
             Text text = mTexts[i];
-//            mTextPaint.setTextSize(text.size);
+            mTextPaint.setTextSize(text.size);
             Log.d(TAG, "drawTexts: " + i + " --> content: " + text.content + " --> offset: " + text.offsetX);
             if (i == mTextPos) {
                 Log.d(TAG, "drawTexts: i == mTextPos == " + mTextPos);
@@ -309,7 +309,7 @@ public class LoopBeadLoadingView extends View {
 
                 int tempPos = mTextPos;
                 Log.d(TAG, "onAnimationStart: tempPos:: " + tempPos);
-                int halfLen = mWord.length / 2;
+                int halfLen = mWord.length / 2; // 3
                 while (tempPos - halfLen >= 0) {
                     String content = mTexts[mTextPos].content;
                     Log.d(TAG, "onAnimationStart: in while: content--> " + content);
