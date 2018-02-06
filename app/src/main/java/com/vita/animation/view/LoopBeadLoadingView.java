@@ -408,21 +408,19 @@ public class LoopBeadLoadingView extends View {
         public void setOffsetX(float offsetX) {
             if (direction == DIRECTION_LEFT) {
                 this.offsetX -= offsetX;
-                Log.d(TAG, "setOffsetX: left -- " + this.offsetX);
             } else if (direction == DIRECTION_RIGHT) {
                 this.offsetX += offsetX;
-                Log.d(TAG, "setOffsetX: right -- " + this.offsetX);
             }
         }
 
         @Override
         public String toString() {
             return "Text{" +
-                    "content='" + content + '\'' +
+                    "content='" + content + "\'" +
                     ", size=" + size +
                     ", x=" + x +
                     ", direction=" + direction +
-                    '}';
+                    "}";
         }
     }
 }
