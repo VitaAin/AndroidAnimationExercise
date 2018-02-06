@@ -84,8 +84,6 @@ public class LoopBeadLoadingView extends View {
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor((Color.MAGENTA));
         mTextPaint.setTextSize(mTextSize);
-
-        initTexts();
     }
 
     @Override
@@ -102,7 +100,9 @@ public class LoopBeadLoadingView extends View {
 
         initFixedCircles();
         updateBead();
-//        initTexts();
+        if (mTexts == null) {
+            initTexts();
+        }
 
         drawRefLine(canvas);
         drawFixedCircles(canvas);
