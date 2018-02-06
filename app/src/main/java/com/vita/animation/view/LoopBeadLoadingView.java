@@ -9,7 +9,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -51,7 +51,7 @@ public class LoopBeadLoadingView extends View {
     private String[] mWord; // 存储初始化顺序后的文本
     private Text[] mTexts; // 存储字母对象
     private int mTextPos;
-    private int mTextSize = 48;
+    private int mTextSize = 88;
     private int mTextScaleSize = 8;
 
     public LoopBeadLoadingView(Context context) {
@@ -83,7 +83,9 @@ public class LoopBeadLoadingView extends View {
 
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor((Color.MAGENTA));
-        mTextPaint.setTextSize(48);
+        mTextPaint.setTextSize(mTextSize);
+
+        initTexts();
     }
 
     @Override
@@ -100,7 +102,7 @@ public class LoopBeadLoadingView extends View {
 
         initFixedCircles();
         updateBead();
-        initTexts();
+//        initTexts();
 
         drawRefLine(canvas);
         drawFixedCircles(canvas);
@@ -165,7 +167,6 @@ public class LoopBeadLoadingView extends View {
                 }
                 toRight = false;
             }
-            Log.d(TAG, "initTexts: mTexts: " + i + " -- " + mTexts[i]);
         }
     }
 
@@ -209,22 +210,28 @@ public class LoopBeadLoadingView extends View {
         float textY = mRingCenterY + 2 * mRingRadius;
 //        canvas.drawText(mWord[mTextPos], mRingCenterX, textY, mTextPaint);
 
-        mTextPaint.setTextSize(mTextSize);
+//        mTextPaint.setTextSize(mTextSize);
         for (int i = 0; i <= mTextPos; i++) {
             Text text = mTexts[i];
+//            mTextPaint.setTextSize(text.size);
+            Log.d(TAG, "drawTexts: " + i + " --> content: " + text.content + " --> offset: " + text.offsetX);
             if (i == mTextPos) {
+                Log.d(TAG, "drawTexts: i == mTextPos == " + mTextPos);
                 mTextPaint.setTextAlign(Paint.Align.CENTER);
                 canvas.drawText(text.content, text.x, textY, mTextPaint);
             } else {
+                Log.d(TAG, "drawTexts: i != mTextPos, i == " + i + ", mTextPos == " + mTextPos);
                 mTextPaint.setTextAlign(Paint.Align.LEFT);
                 if (text.direction == Text.DIRECTION_RIGHT) {
+                    Log.d(TAG, "drawTexts: direction is right");
                     canvas.drawText(text.content,
-                            text.x + mTextPaint.measureText(mWord[mTextPos]) / 2 + text.offset,
+                            text.x + mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
                             textY, mTextPaint);
                 } else if (text.direction == Text.DIRECTION_LEFT) {
+                    Log.d(TAG, "drawTexts: direction is left");
                     canvas.drawText(text.content,
                             text.x - mTextPaint.measureText(mWord[i]) -
-                                    mTextPaint.measureText(mWord[mTextPos]) / 2 + text.offset,
+                                    mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
                             textY, mTextPaint);
                 }
             }
@@ -234,7 +241,7 @@ public class LoopBeadLoadingView extends View {
     private void resetTextOffset() {
         if (mTexts == null) return;
         for (Text text : mTexts) {
-            text.offset = 0;
+            text.offsetX = 0;
         }
     }
 
@@ -289,6 +296,7 @@ public class LoopBeadLoadingView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int curTextSize = (int) valueAnimator.getAnimatedValue();
+//                Log.d(TAG, "onAnimationUpdate: curTextSize: " + curTextSize);
                 if (mTextPos >= 0) {
                     mTexts[mTextPos].setSize(curTextSize);
                 }
@@ -301,8 +309,13 @@ public class LoopBeadLoadingView extends View {
                 mTexts[mTextPos].setSize(mTextSize);
 
                 int tempPos = mTextPos;
+                Log.d(TAG, "onAnimationStart: tempPos:: " + tempPos);
                 while (tempPos - 3 >= 0) {
-                    mTexts[tempPos - 3].setOffset(mTextPaint.measureText(mTexts[mTextPos].content));
+                    String content = mTexts[mTextPos].content;
+                    Log.d(TAG, "onAnimationStart: in while: content--> " + content);
+                    float offset = mTextPaint.measureText(content);
+                    Log.d(TAG, "onAnimationStart: in while: tempPos--> " + tempPos + ", offsetX--> " + offset);
+                    mTexts[tempPos - 3].setOffsetX(offset);
                     tempPos -= 2;
                 }
                 if (mTextPos == 0) {
@@ -378,25 +391,27 @@ public class LoopBeadLoadingView extends View {
         private int size;
         private float x;
         private int direction;
-        private float offset;
+        private float offsetX;
 
         public Text(String content, int size, float x, int direction) {
             this.content = content;
             this.size = size;
             this.x = x;
             this.direction = direction;
-            this.offset = 0;
+            this.offsetX = 0;
         }
 
         public void setSize(int size) {
             this.size = size;
         }
 
-        public void setOffset(float offset) {
+        public void setOffsetX(float offsetX) {
             if (direction == DIRECTION_LEFT) {
-                this.offset -= offset;
+                this.offsetX -= offsetX;
+                Log.d(TAG, "setOffsetX: left -- " + this.offsetX);
             } else if (direction == DIRECTION_RIGHT) {
-                this.offset += offset;
+                this.offsetX += offsetX;
+                Log.d(TAG, "setOffsetX: right -- " + this.offsetX);
             }
         }
 
