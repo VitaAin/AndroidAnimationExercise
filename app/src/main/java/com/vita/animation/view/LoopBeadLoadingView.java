@@ -208,7 +208,6 @@ public class LoopBeadLoadingView extends View {
 
     private void drawTexts(Canvas canvas) {
         float textY = mRingCenterY + 2 * mRingRadius;
-//        canvas.drawText(mWord[mTextPos], mRingCenterX, textY, mTextPaint);
 
 //        mTextPaint.setTextSize(mTextSize);
         for (int i = 0; i <= mTextPos; i++) {
@@ -310,12 +309,13 @@ public class LoopBeadLoadingView extends View {
 
                 int tempPos = mTextPos;
                 Log.d(TAG, "onAnimationStart: tempPos:: " + tempPos);
-                while (tempPos - 3 >= 0) {
+                int halfLen = mWord.length / 2;
+                while (tempPos - halfLen >= 0) {
                     String content = mTexts[mTextPos].content;
                     Log.d(TAG, "onAnimationStart: in while: content--> " + content);
                     float offset = mTextPaint.measureText(content);
                     Log.d(TAG, "onAnimationStart: in while: tempPos--> " + tempPos + ", offsetX--> " + offset);
-                    mTexts[tempPos - 3].setOffsetX(offset);
+                    mTexts[tempPos - halfLen].setOffsetX(offset);
                     tempPos -= 2;
                 }
                 if (mTextPos == 0) {
