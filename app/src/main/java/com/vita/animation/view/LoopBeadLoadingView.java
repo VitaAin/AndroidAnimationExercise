@@ -51,7 +51,7 @@ public class LoopBeadLoadingView extends View {
     private String[] mWord; // 存储初始化顺序后的文本
     private Text[] mTexts; // 存储字母对象
     private int mTextPos;
-    private int mTextSize = 88;
+    private int mTextSize = 80;
     private int mTextScaleSize = 8;
 
     public LoopBeadLoadingView(Context context) {
@@ -155,14 +155,14 @@ public class LoopBeadLoadingView extends View {
         float x = mRingCenterX;
         for (int i = 0; i < mWord.length; i++) {
             // 向左运动
-            if (!toRight) {
+            if (!toRight) {// i=0,2,4,6
                 mTexts[i] = new Text(mWord[i], 0, x, Text.DIRECTION_LEFT);
                 toRight = true;
-            } else {
+            } else {// i=1,3,5
                 // 居中不动
-                if (i + 1 == mWord.length) {
+                if (i + 1 == mWord.length) {// i=
                     mTexts[i] = new Text(mWord[i], 0, x, Text.DIRECTION_CENTER);
-                } else { // 向右运动
+                } else { // 向右运动 // i=1,3,5
                     mTexts[i] = new Text(mWord[i], 0, x, Text.DIRECTION_RIGHT);
                 }
                 toRight = false;
@@ -216,21 +216,27 @@ public class LoopBeadLoadingView extends View {
             Log.d(TAG, "drawTexts: " + i + " --> content: " + text.content + " --> offset: " + text.offsetX);
             if (i == mTextPos) {
                 Log.d(TAG, "drawTexts: i == mTextPos == " + mTextPos);
-                mTextPaint.setTextAlign(Paint.Align.CENTER);
+//                mTextPaint.setTextAlign(Paint.Align.CENTER);
                 canvas.drawText(text.content, text.x, textY, mTextPaint);
             } else {
                 Log.d(TAG, "drawTexts: i != mTextPos, i == " + i + ", mTextPos == " + mTextPos);
-                mTextPaint.setTextAlign(Paint.Align.LEFT);
+//                mTextPaint.setTextAlign(Paint.Align.LEFT);
                 if (text.direction == Text.DIRECTION_RIGHT) {
                     Log.d(TAG, "drawTexts: direction is right");
+//                    canvas.drawText(text.content,
+//                            text.x + mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
+//                            textY, mTextPaint);
                     canvas.drawText(text.content,
-                            text.x + mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
+                            text.x + text.offsetX,
                             textY, mTextPaint);
                 } else if (text.direction == Text.DIRECTION_LEFT) {
                     Log.d(TAG, "drawTexts: direction is left");
+//                    canvas.drawText(text.content,
+//                            text.x - mTextPaint.measureText(mWord[i]) -
+//                                    mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
+//                            textY, mTextPaint);
                     canvas.drawText(text.content,
-                            text.x - mTextPaint.measureText(mWord[i]) -
-                                    mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
+                            text.x + text.offsetX,
                             textY, mTextPaint);
                 }
             }
@@ -287,7 +293,8 @@ public class LoopBeadLoadingView extends View {
             }
         });
 
-        ValueAnimator animText = ObjectAnimator.ofInt(0, mTextSize, mTextSize + mTextScaleSize, 0,
+        ValueAnimator animText = ObjectAnimator.ofInt(0, mTextSize,
+                mTextSize + mTextScaleSize, 0,
                 mTextSize + mTextScaleSize / 2, mTextSize);
         animText.setDuration(200);
         animText.setInterpolator(new AccelerateInterpolator());
@@ -296,9 +303,7 @@ public class LoopBeadLoadingView extends View {
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int curTextSize = (int) valueAnimator.getAnimatedValue();
 //                Log.d(TAG, "onAnimationUpdate: curTextSize: " + curTextSize);
-                if (mTextPos >= 0) {
-                    mTexts[mTextPos].setSize(curTextSize);
-                }
+                mTexts[mTextPos].setSize(curTextSize);
                 invalidate();
             }
         });
@@ -307,20 +312,84 @@ public class LoopBeadLoadingView extends View {
             public void onAnimationStart(Animator animation) {
                 mTexts[mTextPos].setSize(mTextSize);
 
-                int tempPos = mTextPos;
-                Log.d(TAG, "onAnimationStart: tempPos:: " + tempPos);
-                int halfLen = mWord.length / 2; // 3
-                while (tempPos - halfLen >= 0) {
-                    String content = mTexts[mTextPos].content;
-                    Log.d(TAG, "onAnimationStart: in while: content--> " + content);
-                    float offset = mTextPaint.measureText(content);
-                    Log.d(TAG, "onAnimationStart: in while: tempPos--> " + tempPos + ", offsetX--> " + offset);
-                    mTexts[tempPos - halfLen].setOffsetX(offset);
-                    tempPos -= 2;
+                for (int i = 0; i < mTextPos; i++) {
+                    if (i >= mTextPos - 2) {
+                        mTexts[i].setOffsetX(80);
+                    } else {
+                        mTexts[i].setOffsetX(80 + mTexts[i + 2].offsetX);
+                    }
                 }
-                if (mTextPos == 0) {
-                    resetTextOffset();
+                for (int i = mTextPos; i < mTexts.length; i++) {
+                    mTexts[i].setOffsetX(0);
                 }
+
+//                if (mTextPos == 0) {
+//                    resetTextOffset();
+//                } else if (mTextPos == 1) {
+//                    mTexts[0].setOffsetX(80);
+//                    mTexts[1].setOffsetX(0);
+//                    mTexts[2].setOffsetX(0);
+//                    mTexts[3].setOffsetX(0);
+//                    mTexts[4].setOffsetX(0);
+//                    mTexts[5].setOffsetX(0);
+//                    mTexts[6].setOffsetX(0);
+//                } else if (mTextPos == 2) {
+//                    mTexts[0].setOffsetX(80);
+//                    mTexts[1].setOffsetX(80);
+//                    mTexts[2].setOffsetX(0);
+//                    mTexts[3].setOffsetX(0);
+//                    mTexts[4].setOffsetX(0);
+//                    mTexts[5].setOffsetX(0);
+//                    mTexts[6].setOffsetX(0);
+//                } else if (mTextPos == 3) {
+//                    mTexts[0].setOffsetX(160);
+//                    mTexts[1].setOffsetX(80);
+//                    mTexts[2].setOffsetX(80);
+//                    mTexts[3].setOffsetX(0);
+//                    mTexts[4].setOffsetX(0);
+//                    mTexts[5].setOffsetX(0);
+//                    mTexts[6].setOffsetX(0);
+//                } else if (mTextPos == 4) {
+//                    mTexts[0].setOffsetX(160);
+//                    mTexts[1].setOffsetX(160);
+//                    mTexts[2].setOffsetX(80);
+//                    mTexts[3].setOffsetX(80);
+//                    mTexts[4].setOffsetX(0);
+//                    mTexts[5].setOffsetX(0);
+//                    mTexts[6].setOffsetX(0);
+//                } else if (mTextPos == 5) {
+//                    mTexts[0].setOffsetX(240);
+//                    mTexts[1].setOffsetX(160);
+//                    mTexts[2].setOffsetX(160);
+//                    mTexts[3].setOffsetX(80);
+//                    mTexts[4].setOffsetX(80);
+//                    mTexts[5].setOffsetX(0);
+//                    mTexts[6].setOffsetX(0);
+//                } else if (mTextPos == 6) {
+//                    mTexts[0].setOffsetX(240);
+//                    mTexts[1].setOffsetX(240);
+//                    mTexts[2].setOffsetX(160);
+//                    mTexts[3].setOffsetX(160);
+//                    mTexts[4].setOffsetX(80);
+//                    mTexts[5].setOffsetX(80);
+//                    mTexts[6].setOffsetX(0);
+//                }
+
+//                int tempPos = mTextPos;
+//                Log.d(TAG, "onAnimationStart: tempPos:: " + tempPos);
+//                int halfLen = mWord.length / 2; // 3
+//                while (tempPos - halfLen >= 0) {
+//                    String content = mTexts[mTextPos].content;
+//                    Log.d(TAG, "onAnimationStart: in while: content--> " + content);
+////                    float offset = mTextPaint.measureText(content);
+//                    float offset = 80;
+//                    Log.d(TAG, "onAnimationStart: in while: tempPos--> " + tempPos + ", offsetX--> " + offset);
+//                    mTexts[tempPos - halfLen].setOffsetX(offset);
+//                    tempPos -= 2;
+//                }
+//                if (mTextPos == 0) {
+//                    resetTextOffset();
+//                }
             }
         });
 
@@ -407,9 +476,9 @@ public class LoopBeadLoadingView extends View {
 
         public void setOffsetX(float offsetX) {
             if (direction == DIRECTION_LEFT) {
-                this.offsetX -= offsetX;
+                this.offsetX = -offsetX;
             } else if (direction == DIRECTION_RIGHT) {
-                this.offsetX += offsetX;
+                this.offsetX = offsetX;
             }
         }
 
