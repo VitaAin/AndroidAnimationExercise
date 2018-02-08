@@ -9,7 +9,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -47,12 +47,15 @@ public class LoopBeadLoadingView extends View {
     private int mRingCenterY;
     private AnimatorSet mAnimSet;
     private boolean isFalling = false;
-    private static final String LOADING_TEXT = "loading";
+    private static final String LOADING_TEXT = "LOADING";
     private String[] mWord; // 存储初始化顺序后的文本
     private Text[] mTexts; // 存储字母对象
     private int mTextPos;
-    private int mTextSize = 80;
+    private int mTextSize = 56;
+    private int mLetterWidth = mTextSize;
     private int mTextScaleSize = 8;
+    private boolean isCycle = false;
+    private float mFallStickyMaxDistance;
 
     public LoopBeadLoadingView(Context context) {
         super(context);
@@ -84,6 +87,7 @@ public class LoopBeadLoadingView extends View {
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setColor((Color.MAGENTA));
         mTextPaint.setTextSize(mTextSize);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
     @Override
@@ -98,18 +102,20 @@ public class LoopBeadLoadingView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        mRingCenterX = mWidth / 2;
+        int offsetY = 0;
+//        int offsetY = -48;
+        mRingCenterY = mHeight / 2 + offsetY;
+        mFallStickyMaxDistance = mRingRadius * 2 / 3;
+
         initFixedCircles();
         updateBead();
-        if (mTexts == null) {
-            initTexts();
-        }
+        initTexts();
 
         drawRefLine(canvas);
         drawFixedCircles(canvas);
         drawBead(canvas);
-        if (isFalling) {
-            //TODO draw bezier
-        }
+        drawFallStickyPath(canvas);
 
         drawTexts(canvas);
 
@@ -119,14 +125,11 @@ public class LoopBeadLoadingView extends View {
     }
 
     private void initFixedCircles() {
+        if (mFixedCircles != null || mWidth == 0) return;
+        Log.d(TAG, "initFixedCircles: " + mWidth);
         mFixedCircles = new ArrayList<>();
 
         double angle = 2 * Math.PI / FIXED_CIRCLE_NUM;
-
-        mRingCenterX = mWidth / 2;
-        int offsetY = 0;
-//        int offsetY = -48;
-        mRingCenterY = mHeight / 2 + offsetY;
         mFixedCircles.add(new Circle(mRingCenterX,
                 mRingCenterY - mRingRadius, mFixedCircleRadius));
         mFixedCircles.add(new Circle(mRingCenterX + mRingRadius * Math.sin(angle),
@@ -149,6 +152,7 @@ public class LoopBeadLoadingView extends View {
     }
 
     private void initTexts() {
+        if (mTexts != null) return;
         initWord();
         mTexts = new Text[mWord.length];
         boolean toRight = false;
@@ -171,7 +175,7 @@ public class LoopBeadLoadingView extends View {
     }
 
     /**
-     * 初始化word的顺序,例如loading->lgonaid,方便进行动画
+     * 初始化word的顺序,如loading->lgonaid,方便进行动画
      */
     protected void initWord() {
         mWord = new String[LOADING_TEXT.length()];
@@ -206,39 +210,37 @@ public class LoopBeadLoadingView extends View {
         canvas.drawCircle(mBead.centerX, mBead.centerY, mBead.radius, mCirclePaint);
     }
 
-    private void drawTexts(Canvas canvas) {
-        float textY = mRingCenterY + 2 * mRingRadius;
+    private void drawFallStickyPath(Canvas canvas) {
+        if (!isFalling) return;
+        Circle from = mFixedCircles.get(0);
+        if ((mBead.centerY - from.centerY) > mFallStickyMaxDistance) {
+            return;
+        }
 
-//        mTextPaint.setTextSize(mTextSize);
+        Path path = new Path();
+        path.moveTo(from.centerX - from.radius, from.centerY);
+        path.lineTo(from.centerX + from.radius, from.centerY);
+        path.quadTo(from.centerX, (from.centerY + mBead.centerY) / 2,
+                mBead.centerX + mBead.radius, mBead.centerY);
+        path.lineTo(mBead.centerX - mBead.radius, mBead.centerY);
+        path.quadTo(from.centerX, (from.centerY + mBead.centerY) / 2,
+                from.centerX - from.radius, from.centerY);
+        canvas.drawPath(path, mCirclePaint);
+    }
+
+    private void drawTexts(Canvas canvas) {
+        if (isCycle && mTextPos == 0) {
+            return;
+        }
+        Log.d(TAG, "drawTexts: " + mTextPos);
+        float textY = mRingCenterY + 2 * mRingRadius;
         for (int i = 0; i <= mTextPos; i++) {
             Text text = mTexts[i];
             mTextPaint.setTextSize(text.size);
-            Log.d(TAG, "drawTexts: " + i + " --> content: " + text.content + " --> offset: " + text.offsetX);
             if (i == mTextPos) {
-                Log.d(TAG, "drawTexts: i == mTextPos == " + mTextPos);
-//                mTextPaint.setTextAlign(Paint.Align.CENTER);
                 canvas.drawText(text.content, text.x, textY, mTextPaint);
             } else {
-                Log.d(TAG, "drawTexts: i != mTextPos, i == " + i + ", mTextPos == " + mTextPos);
-//                mTextPaint.setTextAlign(Paint.Align.LEFT);
-                if (text.direction == Text.DIRECTION_RIGHT) {
-                    Log.d(TAG, "drawTexts: direction is right");
-//                    canvas.drawText(text.content,
-//                            text.x + mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
-//                            textY, mTextPaint);
-                    canvas.drawText(text.content,
-                            text.x + text.offsetX,
-                            textY, mTextPaint);
-                } else if (text.direction == Text.DIRECTION_LEFT) {
-                    Log.d(TAG, "drawTexts: direction is left");
-//                    canvas.drawText(text.content,
-//                            text.x - mTextPaint.measureText(mWord[i]) -
-//                                    mTextPaint.measureText(mWord[mTextPos - 1]) / 2 + text.offsetX,
-//                            textY, mTextPaint);
-                    canvas.drawText(text.content,
-                            text.x + text.offsetX,
-                            textY, mTextPaint);
-                }
+                canvas.drawText(text.content, text.x + text.offsetX, textY, mTextPaint);
             }
         }
     }
@@ -251,31 +253,47 @@ public class LoopBeadLoadingView extends View {
     }
 
     private void startAnim() {
-        ValueAnimator animLoop = ObjectAnimator.ofFloat(0, (float) (2 * Math.PI));
+        ValueAnimator animLoop = ObjectAnimator.ofInt(0, 360);
         animLoop.setDuration(2000);
         animLoop.setInterpolator(new AccelerateDecelerateInterpolator());
         animLoop.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float angle = (float) valueAnimator.getAnimatedValue();
+                float angle = (int) valueAnimator.getAnimatedValue();
+
                 /*
                 圆点坐标：(x0,y0)，半径：r，角度：a，则圆上任一点为：（x1,y1）
                 x1 = x0 + r * sin(a * PI / 180)
                 y1 = y0 - r * cos(a * PI / 180)
                  */
-                mBead.centerX = (float) (mRingCenterX + mRingRadius * Math.sin(angle));
-                mBead.centerY = (float) (mRingCenterY - mRingRadius * Math.cos(angle));
+                mBead.centerX = (float) (mRingCenterX + mRingRadius * Math.sin(angle * Math.PI / 180));
+                mBead.centerY = (float) (mRingCenterY - mRingRadius * Math.cos(angle * Math.PI / 180));
                 invalidate();
             }
         });
 
-        ValueAnimator animFall = ObjectAnimator.ofFloat(mRingCenterY - mRingRadius, mRingCenterY + mRingRadius + mTextHeight);
-        animFall.setDuration(500);
+        ValueAnimator animMix = ObjectAnimator.ofFloat(mFixedCircleRadius,
+                mFixedCircleRadius + mBeadRadius, mFixedCircleRadius,
+                mFixedCircleRadius + mBeadRadius / 2, mFixedCircleRadius + mBeadRadius);
+        animMix.setDuration(600);
+        animMix.setInterpolator(new AccelerateDecelerateInterpolator());
+        animMix.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                mFixedCircles.get(0).radius = (float) valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+
+        ValueAnimator animFall = ObjectAnimator.ofFloat(mRingCenterY - mRingRadius,
+                mRingCenterY + mRingRadius + mTextHeight);
+        animFall.setDuration(1000);
         animFall.setInterpolator(new AccelerateInterpolator());
         animFall.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 mBead.centerY = (float) valueAnimator.getAnimatedValue();
+                mFixedCircles.get(0).radius = calcFixedCircleRadius();
                 invalidate();
             }
         });
@@ -302,7 +320,6 @@ public class LoopBeadLoadingView extends View {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 int curTextSize = (int) valueAnimator.getAnimatedValue();
-//                Log.d(TAG, "onAnimationUpdate: curTextSize: " + curTextSize);
                 mTexts[mTextPos].setSize(curTextSize);
                 invalidate();
             }
@@ -312,81 +329,16 @@ public class LoopBeadLoadingView extends View {
             public void onAnimationStart(Animator animation) {
                 mTexts[mTextPos].setSize(mTextSize);
 
-                for (int i = 0; i < mTextPos; i++) {
+                for (int i = mTextPos; i >= 0; i--) {
                     if (i >= mTextPos - 2) {
-                        mTexts[i].setOffsetX(80);
+                        mTexts[i].setOffsetX(mLetterWidth);
                     } else {
-                        mTexts[i].setOffsetX(80 + mTexts[i + 2].offsetX);
+                        mTexts[i].setOffsetX(mLetterWidth + Math.abs(mTexts[i + 2].offsetX));
                     }
                 }
                 for (int i = mTextPos; i < mTexts.length; i++) {
                     mTexts[i].setOffsetX(0);
                 }
-
-//                if (mTextPos == 0) {
-//                    resetTextOffset();
-//                } else if (mTextPos == 1) {
-//                    mTexts[0].setOffsetX(80);
-//                    mTexts[1].setOffsetX(0);
-//                    mTexts[2].setOffsetX(0);
-//                    mTexts[3].setOffsetX(0);
-//                    mTexts[4].setOffsetX(0);
-//                    mTexts[5].setOffsetX(0);
-//                    mTexts[6].setOffsetX(0);
-//                } else if (mTextPos == 2) {
-//                    mTexts[0].setOffsetX(80);
-//                    mTexts[1].setOffsetX(80);
-//                    mTexts[2].setOffsetX(0);
-//                    mTexts[3].setOffsetX(0);
-//                    mTexts[4].setOffsetX(0);
-//                    mTexts[5].setOffsetX(0);
-//                    mTexts[6].setOffsetX(0);
-//                } else if (mTextPos == 3) {
-//                    mTexts[0].setOffsetX(160);
-//                    mTexts[1].setOffsetX(80);
-//                    mTexts[2].setOffsetX(80);
-//                    mTexts[3].setOffsetX(0);
-//                    mTexts[4].setOffsetX(0);
-//                    mTexts[5].setOffsetX(0);
-//                    mTexts[6].setOffsetX(0);
-//                } else if (mTextPos == 4) {
-//                    mTexts[0].setOffsetX(160);
-//                    mTexts[1].setOffsetX(160);
-//                    mTexts[2].setOffsetX(80);
-//                    mTexts[3].setOffsetX(80);
-//                    mTexts[4].setOffsetX(0);
-//                    mTexts[5].setOffsetX(0);
-//                    mTexts[6].setOffsetX(0);
-//                } else if (mTextPos == 5) {
-//                    mTexts[0].setOffsetX(240);
-//                    mTexts[1].setOffsetX(160);
-//                    mTexts[2].setOffsetX(160);
-//                    mTexts[3].setOffsetX(80);
-//                    mTexts[4].setOffsetX(80);
-//                    mTexts[5].setOffsetX(0);
-//                    mTexts[6].setOffsetX(0);
-//                } else if (mTextPos == 6) {
-//                    mTexts[0].setOffsetX(240);
-//                    mTexts[1].setOffsetX(240);
-//                    mTexts[2].setOffsetX(160);
-//                    mTexts[3].setOffsetX(160);
-//                    mTexts[4].setOffsetX(80);
-//                    mTexts[5].setOffsetX(80);
-//                    mTexts[6].setOffsetX(0);
-//                }
-
-//                int tempPos = mTextPos;
-//                Log.d(TAG, "onAnimationStart: tempPos:: " + tempPos);
-//                int halfLen = mWord.length / 2; // 3
-//                while (tempPos - halfLen >= 0) {
-//                    String content = mTexts[mTextPos].content;
-//                    Log.d(TAG, "onAnimationStart: in while: content--> " + content);
-////                    float offset = mTextPaint.measureText(content);
-//                    float offset = 80;
-//                    Log.d(TAG, "onAnimationStart: in while: tempPos--> " + tempPos + ", offsetX--> " + offset);
-//                    mTexts[tempPos - halfLen].setOffsetX(offset);
-//                    tempPos -= 2;
-//                }
 //                if (mTextPos == 0) {
 //                    resetTextOffset();
 //                }
@@ -394,16 +346,50 @@ public class LoopBeadLoadingView extends View {
         });
 
         mAnimSet = new AnimatorSet();
-        mAnimSet.playSequentially(animLoop, animFall, animText);
+        mAnimSet.playSequentially(animLoop, animMix, animFall, animText);
         mAnimSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-//                Log.d(TAG, "onAnimationEnd: to start");
-                mTextPos = (++mTextPos) % mWord.length;
+                Log.d(TAG, "onAnimationEnd: " + mWord.length);
+                Log.d(TAG, "onAnimationEnd: to start, mTextPos:: " + mTextPos);
+                if (mTextPos != mWord.length - 1) {
+                    mTextPos++;
+                }
+                mTextPos = (mTextPos) % mWord.length;
+                Log.d(TAG, "onAnimationEnd: after update:: " + mTextPos);
+//                if (mTextPos == 0) {
+//                    isCycle = true;
+//                }
                 mAnimSet.start();
             }
         });
         mAnimSet.start();
+    }
+
+    /**
+     * 移动圆下落时，计算固定圆的半径
+     */
+    private float calcFixedCircleRadius() {
+        float distance = calcDistance();
+        distance = Math.min(distance, mFallStickyMaxDistance);
+
+        // 比例
+        float percent = distance / mFallStickyMaxDistance;
+
+        float start = mFixedCircleRadius + mBeadRadius;
+        float end = mFixedCircleRadius;
+        return start + percent * (end - start);
+    }
+
+    /**
+     * 计算顶部固定圆与移动圆之间圆心的直线距离
+     */
+    private float calcDistance() {
+        Circle firstCircle = mFixedCircles.get(0);
+        float xDistance = mBead.centerX - firstCircle.centerX;
+        float yDistance = mBead.centerY - firstCircle.centerY;
+        // d = (x^2 + y^2)^(1/2)
+        return (float) Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
     }
 
     private class Circle {
