@@ -4,20 +4,25 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PointF;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,6 +61,7 @@ public class LoopBeadLoadingView extends View {
     private int mTextScaleSize = 8;
     private boolean isCycle = false;
     private float mFallStickyMaxDistance;
+    private boolean isGoingCenter = false;
 
     public LoopBeadLoadingView(Context context) {
         super(context);
@@ -145,6 +151,7 @@ public class LoopBeadLoadingView extends View {
     }
 
     private void updateBead() {
+        if (isGoingCenter) return;
         if (mBead == null) {
             Circle firstFixedCircle = mFixedCircles.get(0);
             mBead = new Circle(firstFixedCircle.centerX, firstFixedCircle.centerY, mBeadRadius);
@@ -252,65 +259,93 @@ public class LoopBeadLoadingView extends View {
         }
     }
 
+    private void resetAll() {
+        mAnimSet.end();
+        mAnimSet.cancel();
+        mAnimSet = null;
+        resetTextOffset();
+        mTexts = null;
+        mFixedCircles = null;
+        mBead = null;
+        mTextPos = 0;
+        isGoingCenter = false;
+        isCycle = false;
+        isFalling = false;
+    }
+
     private void startAnim() {
-        ValueAnimator animLoop = ObjectAnimator.ofInt(0, 360);
-        animLoop.setDuration(2000);
-        animLoop.setInterpolator(new AccelerateDecelerateInterpolator());
-        animLoop.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float angle = (int) valueAnimator.getAnimatedValue();
+        Animator animLoop = getLoopAnim();
+        Animator animMix = getMixAnim();
+        Animator animFall = getFallAnim();
+        Animator animText = getTextAnim();
 
-                /*
-                圆点坐标：(x0,y0)，半径：r，角度：a，则圆上任一点为：（x1,y1）
-                x1 = x0 + r * sin(a * PI / 180)
-                y1 = y0 - r * cos(a * PI / 180)
-                 */
-                mBead.centerX = (float) (mRingCenterX + mRingRadius * Math.sin(angle * Math.PI / 180));
-                mBead.centerY = (float) (mRingCenterY - mRingRadius * Math.cos(angle * Math.PI / 180));
-                invalidate();
+        mAnimSet = new AnimatorSet();
+        mAnimSet.playSequentially(animLoop, animMix, animFall, animText);
+        mAnimSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Log.d(TAG, "onAnimationEnd: " + mWord.length);
+                Log.d(TAG, "onAnimationEnd: to start, mTextPos:: " + mTextPos);
+//                if (mTextPos != mWord.length - 1) {
+//                    mTextPos++;
+//                }
+                mTextPos = (++mTextPos) % mWord.length;
+                Log.d(TAG, "onAnimationEnd: after update:: " + mTextPos);
+                if (mTextPos == 0) {
+                    isCycle = true;
+                    getGoCenterAnim().start();
+                } else {
+                    mAnimSet.start();
+                }
             }
         });
+        mAnimSet.start();
+    }
 
-        ValueAnimator animMix = ObjectAnimator.ofFloat(mFixedCircleRadius,
-                mFixedCircleRadius + mBeadRadius, mFixedCircleRadius,
-                mFixedCircleRadius + mBeadRadius / 2, mFixedCircleRadius + mBeadRadius);
-        animMix.setDuration(600);
-        animMix.setInterpolator(new AccelerateDecelerateInterpolator());
-        animMix.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mFixedCircles.get(0).radius = (float) valueAnimator.getAnimatedValue();
-                invalidate();
-            }
-        });
+    @NonNull
+    private Animator getGoCenterAnim() {
+        isGoingCenter = true;
+        Collection<Animator> animators = new ArrayList<>();
+        for (int i = 0; i < mFixedCircles.size(); i++) {
+            final Circle circle = mFixedCircles.get(i);
+            ValueAnimator xAnim = ObjectAnimator.ofFloat(circle.centerX, mRingCenterX);
+            xAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    circle.centerX = (float) valueAnimator.getAnimatedValue();
+                    invalidate();
+                }
+            });
+            ValueAnimator yAnim = ObjectAnimator.ofFloat(circle.centerY, mRingCenterY);
+            yAnim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    circle.centerY = (float) valueAnimator.getAnimatedValue();
+                    invalidate();
+                }
+            });
 
-        ValueAnimator animFall = ObjectAnimator.ofFloat(mRingCenterY - mRingRadius,
-                mRingCenterY + mRingRadius + mTextHeight);
-        animFall.setDuration(1000);
-        animFall.setInterpolator(new AccelerateInterpolator());
-        animFall.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                mBead.centerY = (float) valueAnimator.getAnimatedValue();
-                mFixedCircles.get(0).radius = calcFixedCircleRadius();
-                invalidate();
-            }
-        });
-        animFall.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-                isFalling = true;
-            }
-
+            animators.add(xAnim);
+            animators.add(yAnim);
+        }
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(1000);
+        animSet.setInterpolator(new AnticipateOvershootInterpolator());
+        animSet.playTogether(animators);
+        animSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                isFalling = false;
+                resetAll();
+                invalidate();
             }
         });
 
+        return animSet;
+    }
+
+    @NonNull
+    private Animator getTextAnim() {
         ValueAnimator animText = ObjectAnimator.ofInt(0, mTextSize,
                 mTextSize + mTextScaleSize, 0,
                 mTextSize + mTextScaleSize / 2, mTextSize);
@@ -344,30 +379,81 @@ public class LoopBeadLoadingView extends View {
 //                }
             }
         });
+        return animText;
+    }
 
-        mAnimSet = new AnimatorSet();
-        mAnimSet.playSequentially(animLoop, animMix, animFall, animText);
-        mAnimSet.addListener(new AnimatorListenerAdapter() {
+    @NonNull
+    private Animator getFallAnim() {
+        ValueAnimator animFall = ObjectAnimator.ofFloat(mRingCenterY - mRingRadius,
+                mRingCenterY + mRingRadius + mTextHeight);
+        animFall.setDuration(1000);
+        animFall.setInterpolator(new AccelerateInterpolator());
+        animFall.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationEnd(Animator animation) {
-                Log.d(TAG, "onAnimationEnd: " + mWord.length);
-                Log.d(TAG, "onAnimationEnd: to start, mTextPos:: " + mTextPos);
-                if (mTextPos != mWord.length - 1) {
-                    mTextPos++;
-                }
-                mTextPos = (mTextPos) % mWord.length;
-                Log.d(TAG, "onAnimationEnd: after update:: " + mTextPos);
-//                if (mTextPos == 0) {
-//                    isCycle = true;
-//                }
-                mAnimSet.start();
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                mBead.centerY = (float) valueAnimator.getAnimatedValue();
+                mFixedCircles.get(0).radius = calcFixedCircleRadius();
+                invalidate();
             }
         });
-        mAnimSet.start();
+        animFall.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                isFalling = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                isFalling = false;
+            }
+        });
+        return animFall;
+    }
+
+    @NonNull
+    private Animator getMixAnim() {
+        ValueAnimator animMix = ObjectAnimator.ofFloat(mFixedCircleRadius,
+                mFixedCircleRadius + mBeadRadius, mFixedCircleRadius,
+                mFixedCircleRadius + mBeadRadius / 2, mFixedCircleRadius + mBeadRadius);
+        animMix.setDuration(600);
+        animMix.setInterpolator(new AccelerateDecelerateInterpolator());
+        animMix.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                mFixedCircles.get(0).radius = (float) valueAnimator.getAnimatedValue();
+                invalidate();
+            }
+        });
+        return animMix;
+    }
+
+    @NonNull
+    private Animator getLoopAnim() {
+        ValueAnimator animLoop = ObjectAnimator.ofInt(0, 360);
+        animLoop.setDuration(2000);
+        animLoop.setInterpolator(new AccelerateDecelerateInterpolator());
+        animLoop.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float angle = (int) valueAnimator.getAnimatedValue();
+
+                /*
+                圆点坐标：(x0,y0)，半径：r，角度：a，则圆上任一点为：（x1,y1）
+                x1 = x0 + r * sin(a * PI / 180)
+                y1 = y0 - r * cos(a * PI / 180)
+                 */
+                mBead.centerX = (float) (mRingCenterX + mRingRadius * Math.sin(angle * Math.PI / 180));
+                mBead.centerY = (float) (mRingCenterY - mRingRadius * Math.cos(angle * Math.PI / 180));
+                invalidate();
+            }
+        });
+        return animLoop;
     }
 
     /**
-     * 移动圆下落时，计算固定圆的半径
+     * 移动圆下落时，计算顶部固定圆的半径
      */
     private float calcFixedCircleRadius() {
         float distance = calcDistance();
@@ -477,5 +563,13 @@ public class LoopBeadLoadingView extends View {
                     ", direction=" + direction +
                     "}";
         }
+    }
+}
+
+class MyTypeEvaluator implements TypeEvaluator<PointF> {
+
+    @Override
+    public PointF evaluate(float fraction, PointF startPoint, PointF endPoint) {
+        return null;
     }
 }
