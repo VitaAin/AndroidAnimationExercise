@@ -1,134 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_instance"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#7cadf5"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context="com.vita.animation.instance.InstanceActivity">
 
-    <Button
-        android:id="@+id/btn_trembling"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#b0e97b"
-        android:text="Trembling"
-        android:textAllCaps="false"/>
+        android:background="#7cadf5"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <Button
-        android:id="@+id/btn_tv_close"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="#b0e97b"
-        android:text="TV Close"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_trembling"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#b0e97b"
+            android:text="Trembling"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_scatter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Scatter"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_tv_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="#b0e97b"
+            android:text="TV Close"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_circle_around"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Circle Around"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_scatter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scatter"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_ball_fall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Ball Fall"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_circle_around"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Circle Around"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_anim_in_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Anim in List"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_ball_fall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ball Fall"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_anim_in_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Anim in RV"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_anim_in_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anim in List"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_elegant_leaves"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Elegant Leaves"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_anim_in_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Anim in RV"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_try_bezier"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Try Bezier"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_elegant_leaves"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Elegant Leaves"
+            android:textAllCaps="false"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="------- Jelly Start ------"/>
+        <Button
+            android:id="@+id/btn_try_bezier"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Try Bezier"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_jelly_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Bezier - Jelly 1"
-        android:textAllCaps="false"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="------- Jelly Start ------"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="------- Jelly End ------"/>
+        <Button
+            android:id="@+id/btn_jelly_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bezier - Jelly 1"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_flow_point_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Flow Point Loading"
-        android:textAllCaps="false"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="------- Jelly End ------"/>
 
-    <Button
-        android:id="@+id/btn_sticky_circle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sticky Circle"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_flow_point_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Flow Point Loading"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_loop_bead_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Loop Bead Loading"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_sticky_circle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sticky Circle"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_path_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Path Text"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_loop_bead_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Loop Bead Loading"
+            android:textAllCaps="false"/>
 
-    <Button
-        android:id="@+id/btn_spring_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Spring Loading"
-        android:textAllCaps="false"/>
+        <Button
+            android:id="@+id/btn_path_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Path Text"
+            android:textAllCaps="false"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/btn_spring_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Spring Loading"
+            android:textAllCaps="false"/>
+
+        <Button
+            android:id="@+id/btn_vp_effect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ViewPager Effect"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+</ScrollView>

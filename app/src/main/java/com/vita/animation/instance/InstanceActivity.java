@@ -91,6 +91,9 @@ public class InstanceActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_spring_loading:
                 clz = SpringLoadingActivity.class;
                 break;
+            case R.id.btn_vp_effect:
+                clz = VPEffectActivity.class;
+                break;
         }
         jumpTo(clz);
     }

@@ -52,15 +52,17 @@
         <activity android:name=".instance.FlowPointLoadingActivity">
         </activity>
         <activity android:name=".instance.LoopBeadLoadingActivity">
+        </activity>
+        <activity android:name=".instance.PathTextActivity">
+        </activity>
+        <activity android:name=".instance.SpringLoadingActivity">
+        </activity>
+        <activity android:name=".instance.VPEffectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".instance.PathTextActivity">
-        </activity>
-        <activity android:name=".instance.SpringLoadingActivity">
         </activity>
     </application>
 
