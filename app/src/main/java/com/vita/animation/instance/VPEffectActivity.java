@@ -12,7 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.vita.animation.R;
+import com.vita.animation.pagetransformer.CubePageTransformer;
+import com.vita.animation.pagetransformer.DefaultPageTransformer;
 import com.vita.animation.pagetransformer.DepthPageTransformer;
+import com.vita.animation.pagetransformer.RotatePageTransformer;
+import com.vita.animation.pagetransformer.ZoomPageTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,8 @@ public class VPEffectActivity extends AppCompatActivity {
 
         mVp = (ViewPager) findViewById(R.id.vp);
         mVp.setAdapter(new VpAdapter());
+        mVp.setCurrentItem(1);
+        mVp.setOffscreenPageLimit(1);
     }
 
     private void initData() {
@@ -51,14 +57,20 @@ public class VPEffectActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         ViewPager.PageTransformer transformer = null;
         switch (item.getItemId()) {
-            case R.id.menu_item_normal:
+            case R.id.menu_item_default:
+                transformer = new DefaultPageTransformer();
                 break;
-            case R.id.menu_item_zoom:
+            case R.id.menu_item_zoom1:
                 transformer = new DepthPageTransformer();
                 break;
+            case R.id.menu_item_zoom2:
+                transformer = new ZoomPageTransformer();
+                break;
             case R.id.menu_item_cube:
+                transformer = new CubePageTransformer();
                 break;
             case R.id.menu_item_rotate:
+                transformer = new RotatePageTransformer();
                 break;
         }
         if (transformer != null) {
