@@ -565,11 +565,3 @@ public class LoopBeadLoadingView extends View {
         }
     }
 }
-
-class MyTypeEvaluator implements TypeEvaluator<PointF> {
-
-    @Override
-    public PointF evaluate(float fraction, PointF startPoint, PointF endPoint) {
-        return null;
-    }
-}
