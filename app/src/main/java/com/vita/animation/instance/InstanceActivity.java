@@ -79,6 +79,18 @@ public class InstanceActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btn_flow_point_loading:
                 clz = FlowPointLoadingActivity.class;
                 break;
+            case R.id.btn_sticky_circle:
+                clz = StickyCircleActivity.class;
+                break;
+            case R.id.btn_loop_bead_loading:
+                clz = LoopBeadLoadingActivity.class;
+                break;
+            case R.id.btn_path_text:
+                clz = PathTextActivity.class;
+                break;
+            case R.id.btn_spring_loading:
+                clz = SpringLoadingActivity.class;
+                break;
         }
         jumpTo(clz);
     }

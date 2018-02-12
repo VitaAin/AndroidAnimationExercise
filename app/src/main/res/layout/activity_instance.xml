@@ -96,11 +96,39 @@
         android:gravity="center"
         android:text="------- Jelly End ------"/>
 
-    <TextView
+    <Button
         android:id="@+id/btn_flow_point_loading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Floe Point Loading"
+        android:text="Flow Point Loading"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_sticky_circle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sticky Circle"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_loop_bead_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Loop Bead Loading"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_path_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Path Text"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_spring_loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Spring Loading"
         android:textAllCaps="false"/>
 
 </LinearLayout>
