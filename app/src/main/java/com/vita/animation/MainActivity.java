@@ -10,6 +10,9 @@ import com.vita.animation.value.ValueAnimActivity;
 import com.vita.animation.instance.InstanceActivity;
 import com.vita.animation.tween.TweenAnimActivity;
 
+/**
+ * Android动画练习
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
